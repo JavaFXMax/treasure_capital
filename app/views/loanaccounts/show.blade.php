@@ -180,8 +180,7 @@ function asMoney($value) {
             <th>Principal </th>
             <th>Interest </th>
             <th>Total </th>
-            <th>Loan Balance </th>
-            <th>Monthly Payment </th>
+            <th>Loan Balance </th>           
           </thead>
           <tbody>
             <tr>
@@ -214,8 +213,7 @@ function asMoney($value) {
               <td>{{ asMoney($loanaccount->amount_disbursed + $loanaccount->top_up_amount)}}</td>
               <td>{{ asMoney($rst_amount)}}</td>
               <td>{{ asMoney($totalamount)  }}</td>
-              <td>{{ asMoney($totalamount)  }}</td>
-              <td>{{ asMoney(0)  }}</td>
+              <td>{{ asMoney($totalamount)  }}</td>              
             </tr>
             <?php 
                 $date = date("d-M-Y", strtotime($loanaccount->repayment_start_date));
@@ -261,6 +259,7 @@ function asMoney($value) {
               <td>             
                 {{ asMoney($balance - $total)}}
               </td>
+              <!--
                <td>             
               @if($loanaccount->loanproduct->amortization == 'EI')
                               {{ asMoney(Loanaccount::getEMP($loanaccount))}}
@@ -270,6 +269,7 @@ function asMoney($value) {
                               {{ asMoney($total)}}
               @endif
               </td>
+              -->
             </tr>
             <?php
               $balance = $balance - $total; 

@@ -38,7 +38,7 @@
       </thead>
       <tbody>
 
-        /*<?php $i = 1; ?>*/
+        <?php $i = 1; ?>
         @foreach($member->savingaccounts as $saving)
 
         <tr>

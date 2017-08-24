@@ -68,7 +68,6 @@ class SavingproductsController extends \BaseController {
 		$savingposting->create_post_rules($product, $fee_income_acc, $saving_control_acc, $cash_account);
 		return Redirect::route('savingproducts.index');
 	}
-
 	/**
 	 * Display the specified savingproduct.
 	 *
@@ -143,7 +142,7 @@ class SavingproductsController extends \BaseController {
 	/**
 	 * Remove the specified savingproduct from storage.
 	 *
-	 * @param  int  $id
+	 * @param  int 0000000 $id
 	 * @return Response
 	 */
 	public function destroy($id)

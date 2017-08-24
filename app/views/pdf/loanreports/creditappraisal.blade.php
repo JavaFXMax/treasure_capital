@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>INDIVIDUAL CREDIT APPRAISAL FORM</title>   
+    <title>INDIVIDUAL CREDIT APPRAISAL FORM</title>
    <style>
      @page {  margin: 120px 50px 80px 50px;   }
      .header { position: fixed;
@@ -9,7 +9,7 @@
     height: 116px;}
      .footer { position: fixed; bottom: -50px; height: 30px; }
      .footer .page:after { content: counter(page, upper-roman); }
-     .content { margin-top: -70px;  }      
+     .content { margin-top: -70px;  }
    </style>
  </head>
   <body style="font-size:11px">
@@ -18,12 +18,12 @@
         return number_format($value, 2);
       }
     ?>
-   <div class="header">    
+   <div class="header">
     <center>
        <h2 style="text-decoration: underline;">
           INDIVIDUAL CREDIT APPRAISAL FORM
        </h2>
-    </center> 
+    </center>
    </div>
    <div class="footer">
   <p class="page">Page <?php $PAGE_NUM ?></p>
@@ -39,7 +39,7 @@
         <tr>
         <td style="border-right: 1px solid #999;"></td>
         <td>
-        <table style="width:100%;">        
+        <table style="width:100%;">
           <thead style="border-bottom: 1px solid #999;">
             <tr>
               <td style="height:25px;">
@@ -50,40 +50,40 @@
             </tr>
           </thead>
           <thead style="border-bottom: 1px solid #999;">
-          <tr>            
+          <tr>
             <td style="height:25px;">
               Savings Acc: <strong style="margin-right: 3%;">{{$savingaccount}}</strong>
-              Total Savings: &nbsp;<strong style="margin-right: 3%;">{{asMoney($savings)}}</strong>   
+              Total Savings: &nbsp;<strong style="margin-right: 3%;">{{asMoney($savings)}}</strong>
               Shares Acc: <strong style="margin-right: 3%;">
                           @if($shareaccount=='')
                             {{$shareaccount='NNNNNNNNNNN'}}
                           @else
                             {{$shareaccount}}
                           @endif
-                          </strong> 
+                          </strong>
               Total Shares: &nbsp;<strong style="margin-right: 3%;">{{asMoney($shares)}}</strong>
             </td>
           </tr>
-          </thead> 
+          </thead>
           <thead style="border-bottom: 1px solid #999;">
-          <tr>            
+          <tr>
             <td style="height:25px;">
               Loan Amount: <strong style="margin-right: 5%;">
-                              {{asMoney($currentloan->amount_applied)}} 
+                              {{asMoney($currentloan->amount_applied)}}
                             </strong>
               Loan Period: &nbsp;<strong style="margin-right: 5%;">
                               {{$currentloan->repayment_duration}} Months
-                              </strong>   
+                              </strong>
               Interest Rate: <strong style="margin-right: 5%;">
                               {{$currentloan->interest_rate}} % Monthly
-                             </strong>   
+                             </strong>
               Date Applied: <strong style="margin-right: 3%;">
                               {{date('d-F-Y',strtotime($currentloan->application_date))}}
-                             </strong>                                            
+                             </strong>
             </td>
           </tr>
-          </thead>                   
-          <tr>            
+          </thead>
+          <tr>
             <td style="height: 20px;"><strong>Comment of the Loan Officer</strong></td>
           </tr>
         </table>
@@ -111,13 +111,13 @@
             </tr>
           </thead>
           @foreach($loans as $loan)
-          <thead style="border-bottom: 1px solid #999;">          
-          <tr>            
+          <thead style="border-bottom: 1px solid #999;">
+          <tr>
             <td style="border-right: 1px solid #999;text-align: center;">
               {{$loan->id}}
             </td>
             <td style="border-right: 1px solid #999;text-align: center;">
-              {{date('d-F-Y',strtotime($loan->application_date))}}             
+              {{date('d-F-Y',strtotime($loan->application_date))}}
             </td>
             <td style="border-right: 1px solid #999;text-align: center;">
               {{asMoney($loan->amount_disbursed)}}
@@ -126,7 +126,7 @@
               {{$loan->repayment_duration}}
             </td>
               <?php
-                $period=$loan->repayment_duration; 
+                $period=$loan->repayment_duration;
                 $id=$loan->id;
                 $repaid=DB::table('loanrepayments')->where('loanaccount_id','=',$id)->count();
                 $periodsrepaid=$repaid/2;
@@ -147,11 +147,11 @@
               @else
                 <strong>NOT APPLICABLE/OVER PAID</strong>
               @endif
-              
+
             </td>
           </tr>
-          </thead> 
-          @endforeach                   
+          </thead>
+          @endforeach
         </table>
         </td>
         </tr>
@@ -173,7 +173,7 @@
             </tr>
           </thead>
           <thead style="border-bottom: 1px solid #999;">
-          <tr>            
+          <tr>
             <td>
               <table style="width:100%;border-right: 1px solid #999;border-left: 1px solid #999;
                 border-top: 1px solid #999;">
@@ -181,41 +181,41 @@
                 <tr>
                   <th  style="border-right: 1px solid #999;text-align: left;">
                     OTHER ECONOMIC ACTIVITIES
-                  </th>   
+                  </th>
                   <th style="text-align: left;">
                     AMOUNT(KSHS.)
-                  </th>        
+                  </th>
                 </tr>
                 </thead>
-                <thead style="border-bottom: 1px solid #999;"> 
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;">NET SALARY</td>
                   <td style="text-align: center;"></td>
-                </tr> 
+                </tr>
                 </thead>
-                <thead style="border-bottom: 1px solid #999;">  
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;">FARMING</td>
                   <td style="text-align: center;"></td>
                 </tr>
                 </thead>
-                <thead style="border-bottom: 1px solid #999;"> 
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;">BUSINESS</td>
                   <td style="text-align: center;"></td>
                 </tr>
                 </thead>
-                <thead style="border-bottom: 1px solid #999;"> 
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;">OTHERS</td>
                   <td style="text-align: center;"></td>
                 </tr>
-                </thead>                
-                <thead style="border-bottom: 1px solid #999;"> 
+                </thead>
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;""><strong>TOTAL</strong></td>
                   <td style="text-align: center;"></td>
-                </tr>   
+                </tr>
                 </thead>
               </table>
             </td>
@@ -226,59 +226,59 @@
                 <tr>
                   <th  style="border-right: 1px solid #999;text-align: left;">
                     DESCRIPTION
-                  </th>   
+                  </th>
                  <th style="text-align: left;">
                     AMOUNT(KSHS.)
-                  </th>        
+                  </th>
                 </tr>
                 </thead>
-                <thead style="border-bottom: 1px solid #999;"> 
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;"">RENT</td>
                   <td style="text-align: center;"></td>
-                </tr> 
+                </tr>
                 </thead>
-                <thead style="border-bottom: 1px solid #999;">  
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;">WATER/PHONE/ELECTRICITY</td>
                   <td style="text-align: center;"></td>
                 </tr>
                 </thead>
-                <thead style="border-bottom: 1px solid #999;"> 
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;">TRANSPORT</td>
                   <td style="text-align: center;"></td>
                 </tr>
                 </thead>
-                <thead style="border-bottom: 1px solid #999;"> 
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;">EDUCATION/MEDICAL</td>
                   <td style="text-align: center;"></td>
                 </tr>
                 </thead>
-                <thead style="border-bottom: 1px solid #999;"> 
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;">OTHERS/ENTERTAINMENT</td>
                   <td style="text-align: center;"></td>
-                </tr>   
-                </thead>                
-                <thead style="border-bottom: 1px solid #999;"> 
+                </tr>
+                </thead>
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;"><strong>TOTAL</strong></td>
                   <td style="text-align: center;"></td>
-                </tr>   
+                </tr>
                 </thead>
               </table>
-            </td>            
+            </td>
           </tr>
           </thead>
-          <thead style="border-bottom: 1px solid #999;">          
-          <tr>            
+          <thead style="border-bottom: 1px solid #999;">
+          <tr>
             <td style="text-align: center;" colspan="2"><strong>NET SURPLUS/ DEFICIT KSHS.</strong></td>
           </tr>
           </thead>
           <thead style="border-bottom: 1px solid #999;">
-          <tr>            
+          <tr>
             <td colspan="2">
 
               <strong>NB**.</strong> SUPPLY COPY OF RECEIPTS OR STATEMENTS WHERE APPLICABLE
@@ -308,38 +308,38 @@
                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <th  style="border-right: 1px solid #999;text-align: left;">
-                    
-                  </th>   
+
+                  </th>
                   <th  style="border-right: 1px solid #999;text-align: left;">
                     CREDIT OFFICER
-                  </th>   
+                  </th>
                  <th style="text-align: left;">
                     BRANCH CREDIT COMMITTEE
-                  </th>        
+                  </th>
                 </tr>
                 </thead>
-                <thead style="border-bottom: 1px solid #999;"> 
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;"">LOAN AMOUNT</td>
                   <td style="text-align: center;border-right: 1px solid #999;"></td>
                   <td style="text-align:center;"></td>
-                </tr> 
+                </tr>
                 </thead>
-                <thead style="border-bottom: 1px solid #999;">  
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;">LOAN PERIOD</td>
                   <td style="text-align: center;border-right: 1px solid #999;"></td>
                   <td style="text-align:center;"></td>
                 </tr>
                 </thead>
-                <thead style="border-bottom: 1px solid #999;"> 
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;">PAYMENT FREQUENCY</td>
                   <td style="text-align: center;border-right: 1px solid #999;"></td>
                   <td style="text-align:center;"></td>
                 </tr>
                 </thead>
-                <thead style="border-bottom: 1px solid #999;"> 
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;">REPAYMENT AMOUNT</td>
                   <td style="text-align: center;border-right: 1px solid #999;"></td>
@@ -349,29 +349,29 @@
                   </td>
                 </tr>
                 </thead>
-                <thead style="border-bottom: 1px solid #999;"> 
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
-                  <td colspan="3">-------------</td>                  
-                </tr>   
-                </thead> 
-                <thead style="border-bottom: 1px solid #999;"> 
+                  <td colspan="3">-------------</td>
+                </tr>
+                </thead>
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td style="border-right: 1px solid #999;">CREDIT OFFICER</td>
                   <td style="text-align: left;border-right: 1px solid #999;">SIGNATURE</td>
                   <td>DATE</td>
                 </tr>
-                </thead> 
-                <thead style="border-bottom: 1px solid #999;"> 
+                </thead>
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
-                  <td colspan="3"><strong>BRANCH CREDIT COMMITTEE</strong></td>                  
-                </tr>   
-                </thead>   
-                <thead> 
+                  <td colspan="3"><strong>BRANCH CREDIT COMMITTEE</strong></td>
+                </tr>
+                </thead>
+                <thead>
                 <tr>
-                  <td colspan="3" style="height: 50px;">COMMENTS</td>                  
-                </tr>   
-                </thead>               
-                <thead style="border-bottom: 1px solid #999;"> 
+                  <td colspan="3" style="height: 50px;">COMMENTS</td>
+                </tr>
+                </thead>
+                <thead style="border-bottom: 1px solid #999;">
                 <tr>
                   <td colspan="3">
                      <table style="width:100%;border-right: 1px solid #999;border-left: 1px solid #999;border-top: 1px solid #999;">
@@ -379,74 +379,74 @@
                         <tr>
                           <th  style="border-right: 1px solid #999;text-align: left;">
                             NAME
-                          </th>   
+                          </th>
                           <th  style="border-right: 1px solid #999;text-align: left;">
                             SIGNATURE
-                          </th>   
+                          </th>
                          <th style="text-align: left;">
                             DATE
-                          </th>        
+                          </th>
                         </tr>
                       </thead>
                       <thead style="border-bottom: 1px solid #999;">
                         <tr>
                           <td  style="border-right: 1px solid #999;text-align: left;">
                             1
-                          </td>   
+                          </td>
                           <td  style="border-right: 1px solid #999;text-align: left;">
-                            
-                          </td>   
+
+                          </td>
                          <td style="text-align: left;">
-                            
-                          </td>        
+
+                          </td>
                         </tr>
                       </thead>
                       <thead style="border-bottom: 1px solid #999;">
                         <tr>
                           <td  style="border-right: 1px solid #999;text-align: left;">
                             2
-                          </td>   
+                          </td>
                           <td  style="border-right: 1px solid #999;text-align: left;">
-                            
-                          </td>   
+
+                          </td>
                          <td style="text-align: left;">
-                            
-                          </td>        
+
+                          </td>
                         </tr>
                       </thead>
                       <thead style="border-bottom: 1px solid #999;">
                         <tr>
                           <td  style="border-right: 1px solid #999;text-align: left;">
                             3
-                          </td>   
+                          </td>
                           <td  style="border-right: 1px solid #999;text-align: left;">
-                            
-                          </td>   
+
+                          </td>
                          <td style="text-align: left;">
-                            
-                          </td>        
+
+                          </td>
                         </tr>
                       </thead>
                       <thead>
                         <tr>
                           <td  style="border-right: 1px solid #999;text-align: left;">
                             4
-                          </td>   
+                          </td>
                           <td  style="border-right: 1px solid #999;text-align: left;">
-                            
-                          </td>   
+
+                          </td>
                           <td style="text-align: left;">
-                            
-                          </td>        
+
+                          </td>
                         </tr>
                       </thead>
-                     </table>                   
-                  </td>               
-                </tr>   
+                     </table>
+                  </td>
+                </tr>
                 </thead>
               </table>
-            </td>            
-          </tr>         
+            </td>
+          </tr>
         </table>
         </td>
         </tr>

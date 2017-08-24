@@ -1,4 +1,4 @@
- <nav class="navbar-default navbar-static-side" role="navigation" id="wrap">
+ <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav" id="side-menu">
            <!-- <li class="dropdown">
@@ -56,25 +56,25 @@
                     <li>
                         <a href="{{ URL::to('disbursements') }}">
                             <i class="fa fa-random"></i> 
-                            Disbursement Options
+                            Disbursements
                         </a>
                     </li> 
                     <li>
                         <a href="{{ URL::to('matrices') }}">
                             <i class="fa fa-gavel"></i> 
-                            Guarantor Matrix
+                            Collaterals
                         </a>
                     </li>
                     <li>
                         <a href="{{ URL::to('loanproducts') }}">
                             <i class="glyphicon glyphicon-tags fa-fw"></i> 
-                            Loan Products
+                            Products
                         </a>
                     </li>                    
                     <li>
                         <a href="{{ URL::to('loans') }}">
                             <i class="glyphicon glyphicon-pencil fa-fw"></i>
-                             Loan Applications
+                            Applications
                          </a>
                     </li>                                        
                 </ul>                 
@@ -173,6 +173,7 @@
                     </li>    
                 </ul>                 
             </li>
+            <!--
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-random"></i>Surplus <i class="fa fa-caret-down"></i>
@@ -191,7 +192,8 @@
                         </a>
                     </li> 
                 </ul>                 
-            </li>                
+            </li>  
+            -->              
             <!--                                  
             <li>
                 <a href="{{ URL::to('products') }}">

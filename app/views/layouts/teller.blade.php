@@ -1,10 +1,9 @@
-<div class="main_wrapper">
+
 @include('includes.head')
 @include('includes.navt')
 @include('includes.nav_teller')
-
 <div id="page-wrapper">
-            <div class="row" style="margin-top: -8%;">
+            <div class="row">
                 <div class="col-lg-12">
                     @yield('content')
                 </div>
@@ -14,4 +13,3 @@
         </div>
         <!-- /#page-wrapper -->
 @include('includes.footer')
-</div>

@@ -1,4 +1,4 @@
- <nav class="navbar-default navbar-static-side" role="navigation" id="wrap">
+ <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="side-menu">
                     <li>
@@ -10,7 +10,7 @@
                     <li>
                         <a href="{{ URL::to('matrices') }}">
                             <i class="fa fa-gavel"></i> 
-                            Guarantor Matrix
+                            Loan Collaterals
                         </a>
                     </li>                     
                     <li>

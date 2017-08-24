@@ -48,7 +48,8 @@ class LoanaccountsController extends \BaseController {
 	public function apply($id)
 	{
 		$member = Member::find($id);
-		$guarantors = Member::where('id','!=',$id)->get();
+		$guarantors = Member::where('id','!=',$id)->where('group_id','=',$member->group_id)
+            ->get();
 		$loanproducts = Loanproduct::all();
 		$disbursed=Disbursementoption::all();
 		$matrix=Matrix::all();
@@ -61,11 +62,13 @@ class LoanaccountsController extends \BaseController {
 	public function apply2($id){
 
 		$member = Member::find($id);
-        $guarantors = Member::where('id','!=',$id)->get();
+        $guarantors = Member::where('id','!=',$id)
+            ->where('group_id','=',$member->group_id)
+            ->get();
 		$loanproducts = Loanproduct::all();
 		$disbursed=Disbursementoption::all();
-
-		return View::make('css.loancreate', compact('member', 'guarantors', 'loanproducts','disbursed'));
+        $matrix=Matrix::all();
+		return View::make('css.loancreate', compact('member', 'guarantors', 'loanproducts','disbursed','matrix'));
 	}
 
 	/**
@@ -91,9 +94,7 @@ class LoanaccountsController extends \BaseController {
 					{
 						return Redirect::back()->withErrors($validator)->withInput();
 					}
-
 					Loanaccount::submitApplication($data);
-
 					$id = array_get($data, 'member_id');
 
 					return Redirect::to('loans');
@@ -218,9 +219,7 @@ public function shopapplication(){
 		{
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
-
 		$loanaccount->update($data);
-
 		return Redirect::route('loanaccounts.index');
 	}
 
@@ -233,18 +232,20 @@ public function shopapplication(){
 	public function destroy($id)
 	{
 		Loanaccount::destroy($id);
-
 		return Redirect::route('loanaccounts.index');
 	}
-
-
-
-
+    
 	public function approve($id)
 	{
 		$loanaccount = Loanaccount::find($id);
-
-		return View::make('loanaccounts.approve', compact('loanaccount'));
+        $chargeamount=Loanproduct::chargeOnApplication($id);
+        if($chargeamount>0){
+            $charge="By approving this application you acknowledge that you have received KSHS. ".$chargeamount. " as loan application fee.";
+        }else{
+            $amount=0.00;
+            $charge="By approving this application you acknowledge that you have received KSHS. ".$amount. " as loan application fee.";
+        }
+		return View::make('loanaccounts.approve', compact('loanaccount','charge'));
 	}
 
 	/**
@@ -258,15 +259,11 @@ public function shopapplication(){
 		$membertype=Member::where('membership_no','=',$logged)->pluck('member_type');
 		//$loanaccount =  new Loanaccount;
 		$validator = Validator::make($data = Input::all(), Loanaccount::$rules);
-
 		if ($validator->fails())
 		{
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
-
 		//$loanaccount->approve($data);
-
-
 		$loanaccount_id = array_get($data, 'loanaccount_id');
 
 		$loanguarantors=DB::table('loanguarantors')
@@ -277,9 +274,9 @@ public function shopapplication(){
 						->get();	
 		
 		if(empty($loanguarantors)){
+            /**
 				if($membertype=='chairman'){
 					$loanaccount = Loanaccount::findorfail($loanaccount_id);
-
 					//Check if the secretary has approved first n order for the chairman to approve
 					$approvalstt=$loanaccount->secretary_approved;
 					switch($approvalstt){
@@ -301,19 +298,22 @@ public function shopapplication(){
 					}					
 					
 				}else if($membertype=='secretary'){
+                **/
 					$loanaccount = Loanaccount::findorfail($loanaccount_id);
 					$loanaccount->date_approved = array_get($data, 'date_approved');
 					$loanaccount->amount_approved = array_get($data, 'amount_approved');		
 					$loanaccount->interest_rate = array_get($data, 'interest_rate');
 					$loanaccount->period = array_get($data, 'period');
+                    $loanaccount->chairman_approved = TRUE;
+				    $loanaccount->is_approved = TRUE;
 					$loanaccount->secretary_approved = TRUE;
-					$loanaccount->is_new_application = TRUE;
+					$loanaccount->is_new_application = FALSE;
 					$loanaccount->update();
 
 					return Redirect::route('loans.index');
-				}else{
+				/**}else{
 					return Redirect::back()->withQuest("UNAUTHORIZED USER: You are not authorized to approve the loan application");
-				}				
+				}	**/			
 		}else{
 			foreach($loanguarantors as $lguara){
 				$check_if_agreed=$lguara->approved;
@@ -322,6 +322,7 @@ public function shopapplication(){
 						return Redirect::back()->withStatus('The available guarantors have not agreed to act as guarantors for the loan.');
 					break;
 					case 1:
+                        /**
 						if($membertype=='chairman'){
 						$loanaccount = Loanaccount::findorfail($loanaccount_id);
 						//Check if the secretary has approved first n order for the chairman to approve
@@ -340,20 +341,22 @@ public function shopapplication(){
 									return Redirect::route('loans.index');
 							 }							
 					
-						}else if($membertype=='secretary'){
+						}else if($membertype=='secretary'){**/
 							$loanaccount = Loanaccount::findorfail($loanaccount_id);
-							$loanaccount->date_approved = array_get($data, 'date_approved');
-							$loanaccount->amount_approved = array_get($data, 'amount_approved');
-							$loanaccount->interest_rate = array_get($data, 'interest_rate');
-							$loanaccount->period = array_get($data, 'period');
-							$loanaccount->secretary_approved = TRUE;
-							$loanaccount->is_new_application = TRUE;
-							$loanaccount->update();
+                            $loanaccount->date_approved = array_get($data, 'date_approved');
+                            $loanaccount->amount_approved = array_get($data, 'amount_approved');		
+                            $loanaccount->interest_rate = array_get($data, 'interest_rate');
+                            $loanaccount->period = array_get($data, 'period');
+                            $loanaccount->chairman_approved = TRUE;
+                            $loanaccount->is_approved = TRUE;
+                            $loanaccount->secretary_approved = TRUE;
+                            $loanaccount->is_new_application = FALSE;
+                            $loanaccount->update();
 
-							return Redirect::route('loans.index');
-						}else{
+                            return Redirect::route('loans.index');
+						/**}else{
 							return Redirect::back()->withQuest("UNAUTHORIZED USER: You are not authorized to approve the loan application");
-					 }	
+					 }	**/
 					break;
 				}
 			}
@@ -551,14 +554,17 @@ public function shopapplication(){
 	}
 
 
-
-
-
 	public function disburse($id)
 	{
 		$loanaccount = Loanaccount::find($id);
-
-		return View::make('loanaccounts.disburse', compact('loanaccount'));
+        $chargeamount=Loanproduct::chargeOnDisbursement($id);
+        if($chargeamount>0){
+            $charge="By disbursing this approved loan application you acknowledge that you have received KSHS. ".$chargeamount. " as loan disbursement fee.";
+        }else{
+            $amount=0.00;
+            $charge="By disbursing this approved loan application  you acknowledge that you have received KSHS. ".$amount. " as loan disbursement fee.";
+        }
+		return View::make('loanaccounts.disburse', compact('loanaccount','$charge'));
 	}
 
 	/**
@@ -608,33 +614,28 @@ public function shopapplication(){
 
 
 	public function gettopup($id){
-
 		$loanaccount = Loanaccount::findOrFail($id);
-
-
-		return View::make('loanaccounts.topup', compact('loanaccount'));
+        $chargeamount=Loanproduct::chargeOnTopUp($id);
+        if($chargeamount>0){
+            $charge="By topping up this loan you acknowledge that you have received KSHS. ".$chargeamount. " as loan top up fee.";
+        }else{
+            $amount=0.00;
+            $charge="By topping up this loan you acknowledge that you have received KSHS. ".$amount. " as loan top up fee.";
+        }
+		return View::make('loanaccounts.topup', compact('loanaccount','charge'));
 	}
 
 
 
 	public function topup($id){
-
-		
 		$data = Input::all();
-		
 		$date =  Input::get('top_up_date');
 		$amount = Input::get('amount');
-
-	
 		$loanaccount = Loanaccount::findOrFail($id);
-
-
-
 		$loanaccount->is_top_up = true;
 		$loanaccount->top_up_amount = $amount;
 		//$loanaccount->top_up_date = $date;
 		$loanaccount->update();
-
 		Loantransaction::topupLoan($loanaccount, $amount, $date);
 		return Redirect::to('loans/show/'.$loanaccount->id);
 	}

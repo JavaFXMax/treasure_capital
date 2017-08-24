@@ -23,7 +23,7 @@
         <thead style="border-bottom: 1px solid #999;">
           <tr style="border-bottom: 1px solid black;">
             <td>
-               <img src="{{ '../images/logo.png' }}" alt="{{ $organization->logo }}" width="100px" height="45px" />
+               <img src="{{ asset('../images/logo.png') }}" alt="{{ $organization->logo }}" width="100px" height="45px" />
             </td>            
             <td>
               <center>
@@ -59,7 +59,7 @@
         <thead>
           <tr>
             <td>
-               <img src="{{ '../images/claim.jpg' }}" alt="{{ $organization->logo }}" width="100px"/>
+               <img src="{{ asset('../images/claim.jpg') }}" alt="{{ $organization->logo }}" width="100px"/>
             </td>
             <td>
               <p style="font-size: 16px;">

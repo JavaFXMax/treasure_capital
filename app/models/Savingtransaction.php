@@ -277,7 +277,6 @@ class Savingtransaction extends \Eloquent {
 
 			$journal = new Journal;
 
-
 			$journal->journal_entry($data);
 
 
@@ -333,16 +332,10 @@ class Savingtransaction extends \Eloquent {
 		$count = DB::table('savingtransactions')->where('date', '=', $date)->where('savingaccount_id', '=', $savingaccount->id)->count();
 
 		if($count >= 1){
-
 			return true;
 		} else {
-
 			return false;
 		}
 	}
-
-
-
-
 	
 }

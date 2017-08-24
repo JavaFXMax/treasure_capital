@@ -1,18 +1,6 @@
-<style type="text/css">
-#wrapper{
-    margin-top: 0 !important;
-    /*position: fixed;*/
-    top: 0;
-    z-index: 110;
-    border: none;
-    outline: none;
-    //box-shadow: 1px 2px 7px rgba(0,0,0,0.4);
-}
-</style>
 <body>
     <div id="wrapper">
-        <nav class="navbar navbar-default navbar-static-top" role="navigation"
-         style="margin-bottom: -5%;">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse"
                  data-target=".sidebar-collapse">
@@ -137,4 +125,4 @@
         </nav>
         <!-- /.navbar-static-top -->
         </div>
-        <br><br>
+       

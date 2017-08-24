@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>LOAN CLEARANCE CERTIFICATE</title>   
+    <title>LOAN CLEARANCE CERTIFICATE</title>
    <style>
      @page {  margin: 10px 10px 10px 10px;   }
      .header { position: fixed;
@@ -9,7 +9,7 @@
     height: 116px;}
      .footer { position: fixed; bottom: -50px; height: 30px; }
      .footer .page:after { content: counter(page, upper-roman); }
-     .content { margin-top: 0px;  }      
+     .content { margin-top: 0px;  }
    </style>
  </head>
   <body style="font-size:11px;border: 1px solid blue;">
@@ -17,29 +17,29 @@
       function asMoney($value) {
         return number_format($value, 2);
       }
-    ?>   
+    ?>
    <div class="content" style="padding:10px 10px 10px 10px;">      
       <table cellpadding="5" style="width:100%;border-collapse: collapse;">
         <thead style="border-bottom: 1px solid #999;">
           <tr style="border-bottom: 1px solid black;">
             <td>
-               <img src="{{ '../images/logo.png' }}" alt="LOGO" width="100px" height="45px" />
-            </td>            
+               <img src="{{ asset('../images/logo.png') }}" alt="LOGO" width="100px" height="45px" />
+            </td>
             <td>
               <center>
                 <strong>
                 <h2>LOAN CLEARANCE CERTIFICATE</h2>
               </strong>
-              </center>                    
+              </center>
             </td>
             <td>
               <center>
                 <h2> {{ strtoupper($organization->name)}}</h2>
-              </center>                    
+              </center>
             </td>
-          </tr>          
+          </tr>
         </thead>
-      </table> 
+      </table>
       <div style="margin-top: 10%;margin-bottom: 10%;">
         <center>
           <p style="font-size: 18px;">This is to certify that
@@ -53,7 +53,7 @@
           <br><br>has been cleared and the loan account <strong>{{$account->account_number}}</strong> closed.
           </p>
         </center>
-      </div> 
+      </div>
       <table style="width:100%;border-collapse: collapse;">
         <thead>
           <tr>
@@ -70,7 +70,7 @@
                 ---------------------------------------<br>
 
                 Loan and Credit Manager
-              </p>                    
+              </p>
             </td>
             <td>
               <td>
@@ -80,11 +80,11 @@
                 ---------------------------------------<br>
 
                  Chairman, {{$organization->name}}
-              </p>                    
-            </td>             
-          </tr>  
+              </p>
+            </td>
+          </tr>
         </thead>
-      </table>           
+      </table>
    </div>
  </body>
  </html>

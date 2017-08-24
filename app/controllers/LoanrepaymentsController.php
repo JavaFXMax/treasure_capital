@@ -72,6 +72,16 @@ class LoanrepaymentsController extends \BaseController {
 				break;
 		}		
 	}
+	/**/
+	public function demandLetter($id){
+		$loan=Loanaccount::where('id',$id)->first();
+		$member=Member::where('id','=',$loan->member_id)->first();
+		$loanbalance = Loantransaction::getLoanBalance($loan);
+		$organization=Organization::find(1);
+		$pdf = PDF::loadView('pdf.loanreports.demand', compact('loanbalance', 'organization', 'member', 'loan'))->setPaper('a4')->setOrientation('potrait'); 	
+		return $pdf->stream($member->name.' '.$member->membership_no.' '.date('d-F-Y').' '.'Demand Letter.pdf');
+
+	}
 	//Recovering loan from guarantor deposits
 	public function doRecover(){
 		//Obtain user supplied form data

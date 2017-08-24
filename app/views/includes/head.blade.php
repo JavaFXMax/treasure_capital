@@ -20,6 +20,7 @@
     {{ HTML::style('datepicker/css/bootstrap-datepicker.css') }}
     <!-- jquery scripts with datatable scripts -->
      {{ HTML::script('media/js/jquery.js') }}
+     {{ HTML::script('js/chart.js') }}
     {{ HTML::script('media/js/jquery.dataTables.js') }}
     {{ HTML::script('datepicker/js/bootstrap-datepicker.js') }}    
    <script type="text/javascript">

@@ -119,7 +119,7 @@ $('#loanproduct_id').change(function(){
             @endforeach
         </div>
         @endif
-<form method="POST" action="{{{ URL::to('loans/application') }}}" accept-charset="UTF-8">   
+<form method="POST" action="{{{ URL::to('loans/application') }}}" accept-charset="UTF-8" enctype="multipart/form-data">   
         <div class="form-actions form-group" align="right">
           <button type="submit" class="btn btn-primary btn-sm">Submit Application</button> 
         </div>
@@ -127,14 +127,12 @@ $('#loanproduct_id').change(function(){
    <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#loanapplication" aria-controls="loanapplication" role="tab" data-toggle="tab">Loan Application</a></li>
     <li role="presentation"><a href="#guarantor" aria-controls="guarantor" role="tab" data-toggle="tab">Guarantors</a></li>
-    <li role="presentation"><a href="#loansecurities" aria-controls="loansecurities" role="tab" data-toggle="tab">Other Loan Securities</a></li>
+    <li role="presentation"><a href="#loansecurities" aria-controls="loansecurities" role="tab" data-toggle="tab">Loan Securities/Collaterals</a></li>
    </ul>
        
    <div class="tab-content">    
-
           <div class="tab-pane active" role="tabpanel" class="tab-pane" id="loanapplication">
             <br><br>
-            
             <div class="col-lg-12">
     <fieldset>
         <input class="form-control" placeholder="" type="hidden" name="member_id" id="member_id"
@@ -199,46 +197,79 @@ $('#loanproduct_id').change(function(){
             <label for="username">Guarantor </label>
             <div class="select_fields_wrap">
           <button class="btn btn-info select_add_field_button">Add More</button>
-            <div style="margin-top:10px;margin-bottom:10px;"><div class="form-group col-lg-11" style="margin-left:-15px;">
-              <select class="form-control" name="guarantor_id[]">
-                <option value="">select member</option>
+            <div style="margin-top:10px;margin-bottom:10px;">
+                <div class="form-group col-lg-11" style="margin-left:-15px;">
+                  <select class="form-control" name="guarantor_id[]">
+                    <option value="">Select Guarantor</option>
+                    <option>--------------------------</option>
+                    @foreach($guarantors as $guarantor)
+                      <option value="{{$guarantor->id}}">
+                        {{ $guarantor->membership_no  }} {{ $guarantor->name }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+            
+            </div>
+            
+            </div>
+
+          </div>
+          </div>
+
+
+<!--
+
+<div class="form-group">
+             <p style="color:red;"><strong>NB:</strong> Not Mandatory</p>
+            <label for="username">Guarantor Matrix</label>
+            <select class="form-control" name="matrix">
+                <option value="">select guarantor matrix</option>
                 <option>--------------------------</option>
-                @foreach($guarantors as $guarantor)
-                <option value="{{$guarantor->id}}">{{ $guarantor->membership_no  }} {{ $guarantor->name }}</option>
+                @foreach($matrix as $loanproduct)
+                <option value="{{$loanproduct->id}}">{{ $loanproduct->name }}</option>
                 @endforeach
-            </select></div>
-            
-            </div>
-            
-            </div>
+            </select>            
+        </div> 
+        <div class="form-group">
+              <label for="username">Guarantor Matrix Copy</label>
+              <input  type="file" name="scanned_copy" id="signature" >
+        </div> 
 
-          </div>
-          </div>
-
-
-         
-
+-->
           </div>
 
           <div role="tabpanel" class="tab-pane" id="loansecurities">
           <br><br>
             
             <div class="col-lg-12">
-         
-         <div class="input_fields_wrap">
-          <label for="username">Loan Securities </label><br>
-        
-          <button class="btn btn-info add_field_button">Add More</button>
-          <div style="margin-top:10px;margin-bottom:10px;"><div class="col-lg-11 form-group" style="margin-left:-15px;"><input class="form-control" type="text" name="securities[]"></div></div>
-         </div>
+                 <div class="input_fields_wrap">
+                     <p style="color:red;"><strong>NB: </strong> Not Mandatory</p>
+                  <label for="username">Loan Collateral </label><br>
 
+                  <!--
+                    <button class="btn btn-info add_field_button">Add More</button>
+                  --> 
+                    <div style="margin-top:10px;margin-bottom:10px;">
+                        <div class="col-lg-11 form-group" style="margin-left:-15px;">
+                              <select class="form-control" name="securities[]">
+                                    <option value="">Select Loan Collateral</option>
+                                    <option>--------------------------</option>
+                                    @foreach($matrix as $loanproduct)
+                                    <option value="{{$loanproduct->id}}">
+                                        {{ $loanproduct->name }}
+                                    </option>
+                                    @endforeach
+                              </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="username">Collateral Scanned Copy</label>
+                          <input  type="file" name="scanned_copy" id="signature" >
+                        </div> 
+                    </div>
+                 </div>
           </div>
-
-
-         
-
           </div>
-
 </div>
 </form>
 

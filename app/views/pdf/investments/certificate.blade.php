@@ -23,7 +23,7 @@
         <thead style="border-bottom: 1px solid #999;">
           <tr style="border-bottom: 1px solid black;">
             <td>
-               <img src="{{ '../images/logo.png' }}" alt="LOGO" width="100px" height="45px" />
+               <img src="{{ asset('../images/logo.png') }}" alt="LOGO" width="100px" height="45px" />
             </td>                    
             <td>
               <center>

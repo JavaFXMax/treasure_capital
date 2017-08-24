@@ -1,8 +1,6 @@
 @extends('layouts.membercss')
 @section('content')
 <br/>
-
-
 <?php
 function asMoney($value) {
   return number_format($value, 2);
@@ -10,7 +8,7 @@ function asMoney($value) {
 ?>
 <div class="row">
   <div class="col-lg-12">
-  <h3>{{$member->name}} Loan Accounts</h3>
+  <h3> Loan Accounts</h3>
   <hr>
 </div>  
 </div>

@@ -84,6 +84,12 @@ Route::filter('auth', function()
 });
 
 
+Route::filter('mobile', function()
+{
+	$user_id = Input::get('user_id');
+	
+});
+
 Route::filter('auth.basic', function()
 {
 	return Auth::basic();

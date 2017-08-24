@@ -1,10 +1,10 @@
-<div class="main_wrapper">
+
 @include('includes.head')
 @include('includes.nav')
 @include('includes.nav_member')
 
 <div id="page-wrapper">
-            <div class="row" style="margin-top: -8%;">
+            <div class="row">
                 <div class="col-lg-12">
                     @yield('content')
                 </div>
@@ -14,4 +14,3 @@
         </div>
         <!-- /#page-wrapper -->
 @include('includes.footer')
-</div>

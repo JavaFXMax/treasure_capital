@@ -144,54 +144,28 @@
 
             </select>
             </div>
-
             </div>
-
-
-
-
         </div>
-
-
-
-
-
-
-
-
          <div class="row">
-
                 INCOME
                 <hr>
-
             <div class="col-lg-4">
-
-
-    
             <div class="form-group ">
             <label for="username">Interest Account</label>
             <select class="form-control" name="loan_interest" required>
-
                 <option></option>
                 @foreach($accounts as $account)
                 @if($account->category == 'INCOME')
                 <option value="{{ $account->id }}">{{ $account->name."(".$account->code.")" }}</option>
                 @endif
                 @endforeach
-
-
             </select>
             </div>
-
             </div>
-
-
             <div class="col-lg-4">
-
                 <div class="form-group ">
             <label for="username">Fees Account</label>
             <select class="form-control" name="loan_fees" required>
-
                 <option></option>
                 @foreach($accounts as $account)
                 @if($account->category == 'INCOME')
@@ -225,23 +199,9 @@
             </div>
 
             </div>
-
-
-
-
         </div>
-
-
-
-
 <?php $currency = Currency::find(1); ?>
-
-
-
         <div class="row">
-
-              
-
             <div class="col-lg-4">
 
                   EXPENSE

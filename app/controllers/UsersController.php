@@ -189,7 +189,6 @@ class UsersController extends Controller{
         return View::make(Config::get('confide::reset_password_form'))
                 ->with('token', $token);
     }
-
     /**
      * Attempt change password of the user
      *

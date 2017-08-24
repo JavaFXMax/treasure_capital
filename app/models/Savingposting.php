@@ -13,13 +13,10 @@ class Savingposting extends \Eloquent {
 
 
 	public function savingproduct(){
-
 		return $this->belongsTo('Savingproduct');
 	}
 
 	public function create_post_rules($product, $fee_income_acc, $saving_control_acc, $cash_account){
-
-
 			//create posting rule for deposit transaction
 
 			$posting = new Savingposting;

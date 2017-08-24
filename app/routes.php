@@ -1,5 +1,15 @@
 <?php
 /*
+*
+*Mobile Application Routes
+*/
+Route::post('mobile/login','MobileController@loginAttempt');
+Route::group(['before' => 'mobile'], function() {
+
+    //Route::get('mobile/login','MobileController@loginAttempt');
+});
+
+/*
 |--------------------------------------------------------------------------
 | Application Routes
 |--------------------------------------------------------------------------
@@ -25,15 +35,6 @@ Route::get('/', function()
             return View::make('login');
         }
 });
-/*Business Intelligence*/
-Route::get('trends', 'StatsController@getIndex');
-Route::post('trends', 'StatsController@selectProduct');
-Route::get('api', 'StatsController@getApi');
-
-/*Help Functionality*/
-Route::get('help','HelpController@getIndex');
-
-
 
 Route::get('/dashboard', function()
 {
@@ -365,7 +366,14 @@ Route::get('automated/savings', function(){
     return View::make('automated', compact('savingproducts'));
 });
 
+/*Business Intelligence*/
+Route::get('trends', 'StatsController@getIndex');
+Route::get('students/chart/data', 'StatsController@studentChartData');
+Route::post('trends', 'StatsController@selectProduct');
+Route::get('api', 'StatsController@getApi');
 
+/*Help Functionality*/
+Route::get('help','HelpController@getIndex');
 
 Route::post('automated', function(){
 
@@ -430,10 +438,7 @@ Route::post('automated', function(){
 
 
 Route::get('system', function(){
-
-
     $organization = Organization::find(1);
-
     return View::make('system.index', compact('organization'));
 });
 
@@ -716,7 +721,13 @@ Route::get('loanrepayments/offset/{id}', 'LoanrepaymentsController@offset');
 Route::get('loanrepayments/recover/{id}', 'LoanrepaymentsController@recoverloan');
 Route::get('loanrepayments/convert/{id}', 'LoanrepaymentsController@convert');
 Route::post('loanrepayments/recover/complete','LoanrepaymentsController@doRecover');
+Route::get('loans/recover/demand/{id}','LoanrepaymentsController@demandLetter');
 Route::post('loanrepayments/convert/commit','LoanrepaymentsController@doConvert');
+
+/* ASSET MANAGEMENT */
+Route::resource('assetManagement', 'AssetMgmtController');
+Route::post('assetManagement/{id}', 'AssetMgmtController@update');
+Route::get('assetManagement/{id}/depreciate', 'AssetMgmtController@depreciate');
 //Guarantor Liabilities
 Route::resource('loanliabilities', 'LoanliabilitiesController');
 
@@ -729,46 +740,49 @@ Route::get('matrices/delete/{id}','MatrixController@destroy');
 
 Route::get('memberloanrepayments/offset/{id}', 'LoanrepaymentsController@offset');
 Route::post('loanrepayments/offsetloan', 'LoanrepaymentsController@offsetloan');
-Route::get('reports', function(){
 
+/**
+ * Bank Account Routes &
+ * Bank Reconciliation Routes
+ */
+Route::resource('bankAccounts', 'BankAccountController');
+Route::get('bankAccounts/reconcile/{id}', 'BankAccountController@showReconcile');
+Route::post('bankAccounts/uploadStatement', 'BankAccountController@uploadBankStatement');
+Route::post('bankAccount/reconcile', 'BankAccountController@reconcileStatement');
+Route::get('bankAccount/reconcile/add/{id}/{id2}/{id3}', 'BankAccountController@addStatementTransaction');
+Route::post('bankAccount/reconcile/add', 'BankAccountController@saveStatementTransaction');
+
+Route::get('bankReconciliation/report', 'ErpReportsController@displayRecOptions');
+Route::post('bankReconciliartion/generateReport', 'ErpReportsController@showRecReport');
+Route::get('reports', function(){
     return View::make('members.reports');
 });
 Route::get('reports/combined', function(){
-
     $members = Member::all();
-
     return View::make('members.combined', compact('members'));
 });
+
+Route::post('reports/combinedstatement','ReportsController@comprehensiveReport');
+
 Route::get('loanreports', function(){
-
     $loanproducts = Loanproduct::all();
-
     return View::make('loanaccounts.reports', compact('loanproducts'));
 });
-
-
 Route::get('reports/monthlyrepayments', function(){
     $loans=Loanaccount::where('is_disbursed','=',TRUE)
     ->groupBy('member_id')
     ->get();
     return View::make('loanaccounts.monthlyrepayments',compact('loans'));
 });
-
 Route::get('savingreports', function(){
-
     $savingproducts = Savingproduct::all();
-
     return View::make('savingaccounts.reports', compact('savingproducts'));
 });
 
 
 Route::get('financialreports', function(){
-
-    
-
     return View::make('pdf.financials.reports');
 });
-
 
 
 Route::get('reports/listing', 'ReportsController@members');
@@ -785,7 +799,8 @@ Route::get('reports/savingproduct/{id}', 'ReportsController@savingproduct');
 Route::post('reports/financials', 'ReportsController@financials');
 
 Route::post('reports/monthlyrepayments', 'ReportsController@monthlyrepayments');
-
+Route::get('groupreports','ReportsController@groups');
+Route::post('groupreports','ReportsController@doReport');
 Route::get('portal', function(){
     $members = DB::table('members')->where('is_active', '=', TRUE)->get();
     return View::make('css.members', compact('members'));

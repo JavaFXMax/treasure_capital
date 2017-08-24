@@ -22,9 +22,7 @@ function asMoney($value) {
 
       <tr>       
         <td style="width:150px">
-
-            <img src="{{ '../images/logo.png' }}" alt="{{ $organization->logo }}" width="150px"/>
-    
+            <img src="{{ asset('../images/logo.png') }}" alt="{{ $organization->logo }}" width="150px"/>
         </td>
 
         <td>
@@ -76,9 +74,7 @@ function asMoney($value) {
           <td style="border-bottom:1px solid black;"><strong>Loan Number</strong></td>
           <td style="border-bottom:1px solid black;"><strong>Loan Amount</strong></td>
           <td style="border-bottom:1px solid black;"><strong>Loan Balance</strong></td>
-
         </tr>
-
         @foreach($loans as $loan)
         @if(Loantransaction::getLoanBalance($loan) > 5)
         <tr>
@@ -91,34 +87,7 @@ function asMoney($value) {
         </tr>
         @endif
         @endforeach
-
-
-
       </table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
    </div>
-
-
-
-
-
-
-
-
  </body>
  </html>

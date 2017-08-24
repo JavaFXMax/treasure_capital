@@ -44,8 +44,21 @@ function asMoney($value) {
    @endif  
    </div>
 	<div class="col-lg-12">
-  <h3>Recovering Loan from Guarantor</h3>
-  <hr>
+    <h3>Loan Recovery</h3>
+    <div class="btn-group">
+    <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+      Demand Letter <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">      
+      <li>
+        <a href="{{URL::to('loans/recover/demand/'.$loanaccount->id)}}">View</a>
+      </li>
+      <li>
+        <a href="{{URL::to('loans/recover/demand/email/'.$loanaccount->id)}}">Email</a>
+      </li>       
+    </ul>
+  </div>
+    <hr>  
 </div>	
 </div>
 <div class="row">

@@ -29,7 +29,7 @@ function asMoney($value) {
        
         <td style="width:150px">
 
-            <img src="{{ '../images/logo.png' }}" alt="{{ $organization->logo }}" width="150px"/>
+            <img src="{{ assety('../images/logo.png') }}" alt="{{ $organization->logo }}" width="150px"/>
     
         </td>
 

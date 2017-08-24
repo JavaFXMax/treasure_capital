@@ -71,6 +71,7 @@ class Loanaccount extends \Eloquent {
 		}
 		return $total_balance;		
 	}
+    
 	//Close a loan account
 	public static function closeLoan($loanaccount){
 		$loanaccount->loan_status='closed';
@@ -84,8 +85,9 @@ class Loanaccount extends \Eloquent {
 		$member = Member::findorfail($member_id);
 
 		$loanproduct = Loanproduct::findorfail($loanproduct_id);
-		//refinance the loan 
+		//start refinance the loan 
 		$refinance=Loanaccount::refinance($member,$loanproduct);
+        //end refinance
 		$amount_applied=array_get($data,'amount_applied') - $refinance;
 		//Submit Application
 		$application = new Loanaccount;
@@ -119,71 +121,49 @@ class Loanaccount extends \Eloquent {
           }
         }
 
-        for ($i=0; $i <count(array_get($data, 'securities')) ; $i++) { 
-        # code...
-        
-        if((array_get($data, 'securities')[$i] != '' || array_get($data, 'securities')[$i] != null)){
-        $security = new Loansecurity;
-        $security->loanaccount_id=$application->id;
-        $security->name = array_get($data, 'securities')[$i];
-        $security->save();
-
-         }
+        for ($i=0; $i <count(array_get($data, 'securities')) ; $i++) {
+            if((array_get($data, 'securities')[$i] != '' || array_get($data, 'securities')[$i] != null)){
+                $matrix=Matrix::where('id','=',array_get($data, 'securities')[$i])
+                    ->pluck('name');
+                $security = new Loansecurity;
+                $security->loanaccount_id=$application->id;
+                $security->name = $matrix;
+                $security->save();
+                /*Update Loanaccount with loan security details*/
+                if(Input::hasFile('scanned_copy')){
+                    $destination = public_path().'/uploads/photos';
+                    $filename = str_random(12);
+                    $ext = Input::file('scanned_copy')->getClientOriginalExtension();
+                    $photo = $filename.'.'.$ext;
+                    Input::file('scanned_copy')->move($destination, $photo);
+                    $loanacc = Loanaccount::findorfail($application->id);
+                    $loanacc->matrix_id = array_get($data, 'securities')[$i];
+                    $loanacc->matrix_photo=$photo;
+                    $loanacc->update();
+                }
+             }
        }
 
-
-       for ($i=0; $i <count(array_get($data, 'guarantor_id')) ; $i++) { 
-        # code...
+       for ($i=0; $i <count(array_get($data, 'guarantor_id')) ; $i++) {
         
         if((array_get($data, 'guarantor_id')[$i] != '' || array_get($data, 'guarantor_id')[$i] != null)){
-        $guarantor = new Loanguarantor;
-        $guarantor->loanaccount_id=$application->id;
-        $guarantor->member_id = array_get($data, 'guarantor_id')[$i];
-        $guarantor->date = array_get($data, 'application_date');
-        $guarantor->save();
-
-        $member1 = Member::findOrFail(array_get($data, 'guarantor_id')[$i]);
-
-        if($member1->email != null){
-        Mail::send( 'emails.guarantor', array('name'=>$member1->name,'mname'=>$member->name, 'id'=>$member->id_number, 'amount_applied'=>array_get($data, 'amount_applied'),'product'=>$loanproduct->name,'application_date'=>array_get($data, 'application_date')), function( $message ) use ($member1)
-        {
-         $message->to($member1->email )->subject( 'Guarantor Approval' );
-        });
-        }
-
+            $guarantor = new Loanguarantor;
+            $guarantor->loanaccount_id=$application->id;
+            $guarantor->member_id = array_get($data, 'guarantor_id')[$i];
+            $guarantor->date = array_get($data, 'application_date');
+            $guarantor->save();
+            $member1 = Member::findOrFail(array_get($data, 'guarantor_id')[$i]);
+            if($member1->email != null){
+                Mail::send( 'emails.guarantor', array('name'=>$member1->name,'mname'=>$member->name, 'id'=>$member->id_number, 'amount_applied'=>array_get($data, 'amount_applied'),'product'=>$loanproduct->name,'application_date'=>array_get($data, 'application_date')), function( $message ) use ($member1){
+                 $message->to($member1->email )->subject( 'Guarantor Approval' );
+                });
+            }
          }
        }
-
-		/*if(array_get($data, 'amount_applied')<=$loanproduct->auto_loan_limit){
-
-		$loanaccount = Loanaccount::findorfail($application->id);
-
-		$loanaccount->date_approved = array_get($data, 'application_date');
-		$loanaccount->amount_approved = array_get($data, 'amount_applied');
-		//$loanaccount->amount_to_pay = (array_get($data, 'amount_approved')*array_get($data, 'interest_rate')/100)+array_get($data, 'amount_approved');
-		$loanaccount->interest_rate = $loanproduct->interest_rate;
-		$loanaccount->period = $loanproduct->period;
-		$loanaccount->is_approved = TRUE;
-		$loanaccount->is_new_application = FALSE;
-
-        $amount = array_get($data, 'amount_applied');
-		$date = array_get($data, 'application_date');
-
-		$loanaccount->date_disbursed = $date;
-		$loanaccount->amount_disbursed = $amount;
-		$loanaccount->repayment_start_date = array_get($data, 'application_date');
-		$loanaccount->account_number = Loanaccount::loanAccountNumber($loanaccount);
-		$loanaccount->is_disbursed = TRUE;
-		
-		$loanaccount->update();
-
-		$loanamount = $amount + Loanaccount::getInterestAmount($loanaccount);
-		Loantransaction::disburseLoan($loanaccount, $loanamount, $date);
-
-	   }
-*/
+        /*UNCOMMENT TO ALLOW SMS NOTIFICATIONS UPON CLIENT REQUEST*/
+        /**
         include(app_path() . '\views\AfricasTalkingGateway.php');
-
+        **/
 		if(array_get($data, 'guarantor_id1') != null || array_get($data, 'guarantor_id1') != ''){
 
 		$mem_id = array_get($data, 'guarantor_id1');
@@ -200,12 +180,12 @@ class Loanaccount extends \Eloquent {
 		$guarantor->save();
 
         if($member1->email != null){
-        Mail::send( 'emails.guarantor', array('name'=>$member1->name,'mname'=>$member->name, 'id'=>$member->id_number, 'amount_applied'=>array_get($data, 'amount_applied'),'product'=>$loanproduct->name,'application_date'=>array_get($data, 'application_date')), function( $message ) use ($member1)
-        {
-         $message->to($member1->email )->subject( 'Guarantor Approval' );
-        });
+            Mail::send( 'emails.guarantor', array('name'=>$member1->name,'mname'=>$member->name, 'id'=>$member->id_number, 'amount_applied'=>array_get($data, 'amount_applied'),'product'=>$loanproduct->name,'application_date'=>array_get($data, 'application_date')), function( $message ) use ($member1){
+             $message->to($member1->email )->subject( 'Guarantor Approval' );
+            });
         }
-		
+        /*DEACTIVATE SMS NOTIFICATIONS AND ENABLE ONCE A SACCO REQUESTS BY REMOVING COMMENTS*/
+        /**
     // Specify your login credentials
     $username   = "kenkode";
     $apikey     = "7876fef8a4303ec6483dfa47479b1d2ab1b6896995763eeb620b697641eba670";
@@ -232,12 +212,12 @@ class Loanaccount extends \Eloquent {
         echo " MessageId: " .$result->messageId;
         echo " Cost: "   .$result->cost."\n";
       }*/
-    }
+   /** }
     catch ( AfricasTalkingGatewayException $e )
     {
       echo "Encountered an error while sending: ".$e->getMessage();
     }
-
+**/
     }if(array_get($data, 'guarantor_id2') != null || array_get($data, 'guarantor_id2') != ''){
 
 		$mem_id1 = array_get($data, 'guarantor_id2');
@@ -254,12 +234,11 @@ class Loanaccount extends \Eloquent {
 		$guarantor->save();
 
 		if($member2->email != null){
-        Mail::send( 'emails.guarantor', array('name'=>$member2->name,'mname'=>$member->name, 'id'=>$member->id_number, 'amount_applied'=>array_get($data, 'amount_applied'),'product'=>$loanproduct->name,'application_date'=>array_get($data, 'application_date')), function( $message ) use ($member2)
-        {
-         $message->to($member2->email )->subject( 'Guarantor Approval' );
-        });
+            Mail::send( 'emails.guarantor', array('name'=>$member2->name,'mname'=>$member->name, 'id'=>$member->id_number, 'amount_applied'=>array_get($data, 'amount_applied'),'product'=>$loanproduct->name,'application_date'=>array_get($data, 'application_date')), function( $message ) use ($member2){
+                 $message->to($member2->email )->subject( 'Guarantor Approval' );
+                });
         }
-
+    /***DISABLE SMS NOTIFICATIONS***
     // Specify your login credentials
     $username   = "kenkode";
     $apikey     = "7876fef8a4303ec6483dfa47479b1d2ab1b6896995763eeb620b697641eba670";
@@ -286,34 +265,26 @@ class Loanaccount extends \Eloquent {
         echo " MessageId: " .$result->messageId;
         echo " Cost: "   .$result->cost."\n";
       }*/
-    }
+   /** }
     catch ( AfricasTalkingGatewayException $e )
     {
       echo "Encountered an error while sending: ".$e->getMessage();
     }
-
+***/
     }if(array_get($data, 'guarantor_id3') != null || array_get($data, 'guarantor_id3') != ''){
-
 		$mem_id3 = array_get($data, 'guarantor_id3');
-
 		$member3 = Member::findOrFail($mem_id3);
-
 		$loanaccount = Loanaccount::findOrFail($application->id);
-
-
 		$guarantor = new Loanguarantor;
-
 		$guarantor->member()->associate($member3);
 		$guarantor->loanaccount()->associate($loanaccount);
 		$guarantor->save();
-
 		if($member3->email != null){
-        Mail::send( 'emails.guarantor', array('name'=>$member3->name,'mname'=>$member->name, 'id'=>$member->id_number, 'amount_applied'=>array_get($data, 'amount_applied'),'product'=>$loanproduct->name,'application_date'=>array_get($data, 'application_date')), function( $message ) use ($member3)
-        {
-         $message->to($member3->email )->subject( 'Guarantor Approval' );
-        });
+            Mail::send( 'emails.guarantor', array('name'=>$member3->name,'mname'=>$member->name, 'id'=>$member->id_number, 'amount_applied'=>array_get($data, 'amount_applied'),'product'=>$loanproduct->name,'application_date'=>array_get($data, 'application_date')), function( $message ) use ($member3){
+             $message->to($member3->email )->subject( 'Guarantor Approval' );
+            });
         }
-
+        /***DISABLE SMS NOTIFICATIONS
     // Specify your login credentials
     $username   = "kenkode";
     $apikey     = "7876fef8a4303ec6483dfa47479b1d2ab1b6896995763eeb620b697641eba670";
@@ -340,21 +311,17 @@ class Loanaccount extends \Eloquent {
         echo " MessageId: " .$result->messageId;
         echo " Cost: "   .$result->cost."\n";
       }*/
-    }
+    /**}
     catch ( AfricasTalkingGatewayException $e )
     {
       echo "Encountered an error while sending: ".$e->getMessage();
     }
-
+**/
     }
-
-
 		Audit::logAudit(date('Y-m-d'), Confide::user()->username, 'loan application', 'Loans', array_get($data, 'amount_applied'));
 
 	}
-
-
-
+    
 	public static function submitShopApplication($data){
 
 		$mem = array_get($data, 'member');
@@ -414,7 +381,6 @@ class Loanaccount extends \Eloquent {
 		if($formula == 'RB'){   			    		
     		$principal_bal = round(($rate*$principal)/(1-(pow($onerate,-$time))),2);
     		$interest_amount = 0;
-        	
     		$interest_amount=($principal_bal*$time)-($principal);
 		}
 		return $interest_amount;
@@ -424,10 +390,8 @@ class Loanaccount extends \Eloquent {
 		$principal = $loanaccount->amount_disbursed;
 		$rate = $loanaccount->interest_rate/100;
 		$time = $loanaccount->repayment_duration;
-
 		$interest = $principal * $rate * $time;
 		$amount = $principal + $interest;
-
 		$amt = $amount/$time;
 		return $amt;
 

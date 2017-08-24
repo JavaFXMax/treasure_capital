@@ -20,9 +20,7 @@ class Loantransaction extends \Eloquent {
 		//$interest_paid = Loanrepayment::getInterestPaid($loanaccount);
 		//$total_paid = $principal_paid + $interest_paid;
 		//loan_amount = Loanaccount::getLoanAmount($loanaccount);
-
 		//$balance = $loan_amount - $total_paid;
-
 		$payments = DB::table('loantransactions')->where('loanaccount_id', '=', $loanaccount->id)->where('type', '=', 'credit')->sum('amount');		
 		$loanamount = Loantransaction::where('loanaccount_id','=',$loanaccount->id)->where('type', '=', 'debit')->sum('amount');
 		$balance = $loanamount - $payments;
@@ -31,17 +29,12 @@ class Loantransaction extends \Eloquent {
 
 
 	public static function getRemainingPeriod($loanaccount){
-
 		$paid_periods = DB::table('loantransactions')->where('loanaccount_id', '=', $loanaccount->id)->where('description', '=', 'loan repayment')->count();
-
 		$remaining_period = $loanaccount->repayment_duration - $paid_periods;
-
 		return $remaining_period;
 	}
 
 	public static function getPrincipalDue($loanaccount){
-
-
 		$remaining_period = Loantransaction::getRemainingPeriod($loanaccount);
 
 		$principal_paid = Loanrepayment::getPrincipalPaid($loanaccount);
@@ -63,18 +56,12 @@ class Loantransaction extends \Eloquent {
 			if($principal_balance > 0 && $remaining_period > 0){
 				$principal_due = $principal_balance / $remaining_period;
 			}
-				
 			//}
-
 			//if($loanaccount->loanproduct->amortization == 'EI'){
-
 				//$principal_due = $loanaccount->amount_disbursed / $loanaccount->repayment_duration;
 			//}
 		}
-
-
 		return $principal_due;
-
 	}
 
 	public static function getInterestDue($loanaccount){
@@ -106,9 +93,7 @@ class Loantransaction extends \Eloquent {
 		return $interest_due;
 	}
 
-
 	public static function repayLoan($loanaccount, $amount, $date){
-
 		$transaction = new Loantransaction;
 		$transaction->loanaccount()->associate($loanaccount);
 		$transaction->date = $date;
@@ -116,12 +101,10 @@ class Loantransaction extends \Eloquent {
 		$transaction->amount = $amount;
 		$transaction->type = 'credit';
 		$transaction->save();
-
 		Audit::logAudit($date, Confide::user()->username, 'loan repayment', 'Loans', $amount);
 	}
 
 	public static function disburseLoan($loanaccount, $amount, $date){
-
 		$transaction = new Loantransaction;
 		$transaction->loanaccount()->associate($loanaccount);
 		$transaction->date = $date;
@@ -129,10 +112,7 @@ class Loantransaction extends \Eloquent {
 		$transaction->amount = $amount;
 		$transaction->type = 'debit';
 		$transaction->save();
-
-
 		$account = Loanposting::getPostingAccount($loanaccount->loanproduct, 'disbursal');
-
 		$data = array(
 			'credit_account' =>$account['credit'] , 
 			'debit_account' =>$account['debit'] ,
@@ -140,33 +120,21 @@ class Loantransaction extends \Eloquent {
 			'amount' => $loanaccount->amount_disbursed,
 			'initiated_by' => 'system',
 			'description' => 'loan disbursement'
-
 			);
-
-
 		$journal = new Journal;
-
-
 		$journal->journal_entry($data);
-
 		Audit::logAudit($date, Confide::user()->username, 'loan disbursement', 'Loans', $amount);
-
 	}
 
 	public static function topupLoan($loanaccount, $amount, $date){
-
 		$transaction = new Loantransaction;
-
 		$transaction->loanaccount()->associate($loanaccount);
 		$transaction->date = $date;
 		$transaction->description = 'loan top up';
 		$transaction->amount = $amount;
 		$transaction->type = 'debit';
 		$transaction->save();
-
-
 		$account = Loanposting::getPostingAccount($loanaccount->loanproduct, 'disbursal');
-
 		$data = array(
 			'credit_account' =>$account['credit'] , 
 			'debit_account' =>$account['debit'] ,
@@ -174,22 +142,10 @@ class Loantransaction extends \Eloquent {
 			'amount' => $loanaccount->top_up_amount,
 			'initiated_by' => 'system',
 			'description' => 'loan top up'
-
 			);
-
-
 		$journal = new Journal;
-
-
 		$journal->journal_entry($data);
-
 		Audit::logAudit($date, Confide::user()->username, 'loan to up', 'Loans', $amount);
-
-
-
 	}
-
-
-
 
 }

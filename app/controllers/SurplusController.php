@@ -22,7 +22,7 @@ class SurplusController extends \BaseController {
 	}
 
 	public function editSetting($id){
-		$setting=Surplus::where('id',$id)->get()->first();		
+		$setting=Surplus::where('id','=',$id)->get()->first();		
 		return View::make('surplus.edit',compact('setting'));
 	}
 

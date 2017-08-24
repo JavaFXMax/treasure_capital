@@ -12,13 +12,11 @@ class Charge extends \Eloquent {
 
 
 	public function loanproducts(){
-
 		return $this->belongsToMany('Loanproduct');
 	}
 
 
 	public function savingproducts(){
-
 		return $this->belongsToMany('Savingproduct');
 	}
 
