@@ -238,13 +238,7 @@ public function shopapplication(){
 	public function approve($id)
 	{
 		$loanaccount = Loanaccount::find($id);
-        $chargeamount=Loanproduct::chargeOnApplication($id);
-        if($chargeamount>0){
-            $charge="By approving this application you acknowledge that you have received KSHS. ".$chargeamount. " as loan application fee.";
-        }else{
-            $amount=0.00;
-            $charge="By approving this application you acknowledge that you have received KSHS. ".$amount. " as loan application fee.";
-        }
+        $charge="A given amount will be charged (if it was specified as a loan product charge) as loan application fee.";
 		return View::make('loanaccounts.approve', compact('loanaccount','charge'));
 	}
 
@@ -299,9 +293,10 @@ public function shopapplication(){
 					
 				}else if($membertype=='secretary'){
                 **/
+                    $chargeamount=Loanproduct::chargeOnApplication($id);
 					$loanaccount = Loanaccount::findorfail($loanaccount_id);
 					$loanaccount->date_approved = array_get($data, 'date_approved');
-					$loanaccount->amount_approved = array_get($data, 'amount_approved');		
+					$loanaccount->amount_approved = array_get($data, 'amount_approved')+$chargeamount;		
 					$loanaccount->interest_rate = array_get($data, 'interest_rate');
 					$loanaccount->period = array_get($data, 'period');
                     $loanaccount->chairman_approved = TRUE;
@@ -342,9 +337,10 @@ public function shopapplication(){
 							 }							
 					
 						}else if($membertype=='secretary'){**/
-							$loanaccount = Loanaccount::findorfail($loanaccount_id);
+                            $chargeamount=Loanproduct::chargeOnApplication($id);
+							$loanaccount =Loanaccount::findorfail($loanaccount_id);
                             $loanaccount->date_approved = array_get($data, 'date_approved');
-                            $loanaccount->amount_approved = array_get($data, 'amount_approved');		
+                            $loanaccount->amount_approved = array_get($data, 'amount_approved')+$chargeamount;		
                             $loanaccount->interest_rate = array_get($data, 'interest_rate');
                             $loanaccount->period = array_get($data, 'period');
                             $loanaccount->chairman_approved = TRUE;
@@ -557,13 +553,7 @@ public function shopapplication(){
 	public function disburse($id)
 	{
 		$loanaccount = Loanaccount::find($id);
-        $chargeamount=Loanproduct::chargeOnDisbursement($id);
-        if($chargeamount>0){
-            $charge="By disbursing this approved loan application you acknowledge that you have received KSHS. ".$chargeamount. " as loan disbursement fee.";
-        }else{
-            $amount=0.00;
-            $charge="By disbursing this approved loan application  you acknowledge that you have received KSHS. ".$amount. " as loan disbursement fee.";
-        }
+        $charge="A given amount will be charged if it was specified as a loan product charge as loan disbursement fee.";
 		return View::make('loanaccounts.disburse', compact('loanaccount','$charge'));
 	}
 
@@ -589,11 +579,11 @@ public function shopapplication(){
 
 		$loanaccount_id = array_get($data, 'loanaccount_id');
 
-		
+		$chargeamount=Loanproduct::chargeOnDisbursement($id);
 		$loanaccount = Loanaccount::findorfail($loanaccount_id);
 
 
-		$amount = array_get($data, 'amount_disbursed');
+		$amount = array_get($data, 'amount_disbursed')+$chargeamount;
 		$date = array_get($data, 'date_disbursed');
 
 		$loanaccount->date_disbursed = $date;
@@ -601,8 +591,6 @@ public function shopapplication(){
 		$loanaccount->repayment_start_date = array_get($data, 'repayment_start_date');
 		$loanaccount->account_number = Loanaccount::loanAccountNumber($loanaccount);
 		$loanaccount->is_disbursed = TRUE;
-		
-	
 		$loanaccount->update();
 
 		$loanamount = $amount + Loanaccount::getInterestAmount($loanaccount);
@@ -615,13 +603,8 @@ public function shopapplication(){
 
 	public function gettopup($id){
 		$loanaccount = Loanaccount::findOrFail($id);
-        $chargeamount=Loanproduct::chargeOnTopUp($id);
-        if($chargeamount>0){
-            $charge="By topping up this loan you acknowledge that you have received KSHS. ".$chargeamount. " as loan top up fee.";
-        }else{
-            $amount=0.00;
-            $charge="By topping up this loan you acknowledge that you have received KSHS. ".$amount. " as loan top up fee.";
-        }
+        //$chargeamount=Loanproduct::chargeOnTopUp($id);
+        $charge="A given amount will be charged (if it was specified as a loan product charge) as loan top up fee.";
 		return View::make('loanaccounts.topup', compact('loanaccount','charge'));
 	}
 
@@ -630,7 +613,8 @@ public function shopapplication(){
 	public function topup($id){
 		$data = Input::all();
 		$date =  Input::get('top_up_date');
-		$amount = Input::get('amount');
+        $chargeamount=Loanproduct::chargeOnTopUp($id);
+		$amount = Input::get('amount')+ $chargeamount;
 		$loanaccount = Loanaccount::findOrFail($id);
 		$loanaccount->is_top_up = true;
 		$loanaccount->top_up_amount = $amount;

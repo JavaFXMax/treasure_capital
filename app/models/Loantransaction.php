@@ -16,14 +16,14 @@ class Loantransaction extends \Eloquent {
 		return $this->belongsTo('Loanaccount');
 	}
 	public static function getLoanBalance($loanaccount){
-		//$principal_paid = Loanrepayment::getPrincipalPaid($loanaccount);
-		//$interest_paid = Loanrepayment::getInterestPaid($loanaccount);
-		//$total_paid = $principal_paid + $interest_paid;
-		//loan_amount = Loanaccount::getLoanAmount($loanaccount);
-		//$balance = $loan_amount - $total_paid;
-		$payments = DB::table('loantransactions')->where('loanaccount_id', '=', $loanaccount->id)->where('type', '=', 'credit')->sum('amount');		
+		$principal_paid = Loanrepayment::getPrincipalPaid($loanaccount);
+		$interest_paid = Loanrepayment::getInterestPaid($loanaccount);
+		$total_paid = $principal_paid + $interest_paid;
+		$loan_amount = Loanaccount::getLoanAmount($loanaccount);
+		$balance = $loan_amount - $total_paid;
+		/*$payments = DB::table('loantransactions')->where('loanaccount_id', '=', $loanaccount->id)->where('type', '=', 'credit')->sum('amount');		
 		$loanamount = Loantransaction::where('loanaccount_id','=',$loanaccount->id)->where('type', '=', 'debit')->sum('amount');
-		$balance = $loanamount - $payments;
+		$balance = $loanamount - $payments;*/
 		return $balance;
 	}
 

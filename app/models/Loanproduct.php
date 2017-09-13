@@ -38,7 +38,7 @@ class Loanproduct extends \Eloquent {
                     $transaction->date = $date;
                     $transaction->description = 'Application Fee';
                     $transaction->amount = $amount;
-                    $transaction->type = 'credit';
+                    $transaction->type = 'debit';
                     $transaction->save();
                     $account = Loanposting::getPostingAccount($loanproduct, 'disbursal');
                     $data = array(
@@ -63,7 +63,7 @@ class Loanproduct extends \Eloquent {
                     $transaction->date = $date;
                     $transaction->description = 'Application Fee';
                     $transaction->amount = $amount;
-                    $transaction->type = 'credit';
+                    $transaction->type = 'debit';
                     $transaction->save();
                     $account = Loanposting::getPostingAccount($loanproduct, 'disbursal');
                     $data = array(
@@ -102,7 +102,7 @@ class Loanproduct extends \Eloquent {
                     $transaction->date = $date;
                     $transaction->description = 'Disbursement Fee';
                     $transaction->amount = $amount;
-                    $transaction->type = 'credit';
+                    $transaction->type = 'debit';
                     $transaction->save();
                     $account = Loanposting::getPostingAccount($loanproduct, 'disbursal');
                     $data = array(
@@ -127,7 +127,7 @@ class Loanproduct extends \Eloquent {
                     $transaction->date = $date;
                     $transaction->description = 'Disbursement Fee';
                     $transaction->amount = $amount;
-                    $transaction->type = 'credit';
+                    $transaction->type = 'debit';
                     $transaction->save();
                     $account = Loanposting::getPostingAccount($loanproduct, 'disbursal');
                     $data = array(
@@ -166,7 +166,7 @@ class Loanproduct extends \Eloquent {
                     $transaction->date = $date;
                     $transaction->description = 'Late Repayment Fee';
                     $transaction->amount = $amount;
-                    $transaction->type = 'credit';
+                    $transaction->type = 'debit';
                     $transaction->save();
                     $account = Loanposting::getPostingAccount($loanproduct, 'disbursal');
                     $data = array(
@@ -191,7 +191,7 @@ class Loanproduct extends \Eloquent {
                     $transaction->date = $date;
                     $transaction->description = 'Late Repayment Fee';
                     $transaction->amount = $amount;
-                    $transaction->type = 'credit';
+                    $transaction->type = 'debit';
                     $transaction->save();
                     $account = Loanposting::getPostingAccount($loanproduct, 'disbursal');
                     $data = array(
