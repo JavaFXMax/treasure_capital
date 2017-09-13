@@ -16,7 +16,7 @@
             @endforeach
         </div>
         @endif
-	<form target="_blank" method="POST" action="{{URL::to('sharereports/individualcontribution')}}" accept-charset="UTF-8">
+	<form target="_blank" method="POST" action="{{URL::to('individualcontribution')}}" accept-charset="UTF-8">
 	    <fieldset>
 		        <div class="form-group">
 		            <label for="username">Select Member:</label>

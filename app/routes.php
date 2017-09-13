@@ -634,9 +634,11 @@ Route::resource('sharetransactions', 'SharetransactionsController');
 Route::get('sharetransactions/create/{id}', 'SharetransactionsController@create');
 Route::get('sharetransactions/receipt/{id}', 'SharetransactionsController@receipt');
 
-Route::resource('sharereports', 'sharereportsController');
+Route::get('sharereports','sharereportsController@index');
 Route::get('sharereports/individualcontribution', 'sharereportsController@show');
-Route::post('sharereports/individualcontribution', 'sharereportsController@individual');
+Route::post('individualcontribution', 'sharereportsController@individual');
+Route::get('sharereports/contributionlisting','sharereportsController@c_listing');
+Route::get('sharereports/sharelisting','sharereportsController@s_listing');
 
 
 

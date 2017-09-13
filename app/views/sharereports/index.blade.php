@@ -10,19 +10,21 @@
 <div class="row">
 	<div class="col-lg-12">
     <ul>
+    <!--
       <li>
         <a href="{{ URL::to('sharereports/contributionlisting') }}" target="_blank">
           Contributions Listing Report
         </a>
       </li>
+      -->
        <li>
         <a href="sharereports/sharelisting" target="_blank"> 
-          Shares Listing Report
+          Contributions and Shares Listing
         </a>
       </li>
       <li>
         <a href="sharereports/individualcontribution" target="_blank">
-          Individual Contribution Report
+          Individual Contribution 
         </a>
       </li>      
     </ul>

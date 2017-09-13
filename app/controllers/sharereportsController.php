@@ -6,9 +6,21 @@ class sharereportsController extends \BaseController{
 		return View::make('sharereports.index');
 	}
 	//Contribution Listing Report
-
+	public function c_listing(){
+		$members=Member::all();
+		$organization=Organization::find(1);
+		$pdf = PDF::loadView('sharereports.pdf.contributionlisting', compact('organization','members'))
+		->setPaper('a5')->setOrientation('potrait');
+		return $pdf->stream('Members Contributions Report.pdf');
+	}
 	//Shares Listing Report
-
+	public function s_listing(){
+		$members=Member::all();
+		$organization=Organization::find(1);
+		$pdf = PDF::loadView('sharereports.pdf.sharelisting', compact('organization','members'))
+		->setPaper('a5')->setOrientation('potrait');
+		return $pdf->stream('Members Shares Report.pdf');
+	}
 	//Individual Contribution Report
 	public function show(){
 		$members=Member::all();

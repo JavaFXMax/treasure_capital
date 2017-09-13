@@ -41,7 +41,7 @@
      <p class="page">Page <?php $PAGE_NUM ?></p>
    </div>
    <div class="content">
-      <table class="table table-bordered" style="width:60%">
+      <table class="table table-bordered">
           <tr>
             <td style="width:17%">Member</td><td>{{ucwords($member->name)}}</td>
           </tr>
@@ -52,11 +52,14 @@
             <td>Total Contributions</td><td>{{asMoney($contributions)}}</td>
           </tr>   
           <tr>
-            <td>Total Shares</td><td>{{asMoney($shares)}}</td>
-          </tr>                   
+            <td>Total Shares</td><td>{{asMoney($contributions)}}</td>
+          </tr> 
+          <tr>
+            <td>Accrued Dividends</td><td>{{asMoney($contributions/40)}}</td>
+          </tr>  
       </table>
       <br><br>
-      <table class="table table-bordered" style="width:100%">
+      <table class="table table-bordered" style="width:100%">          
           <tr style="font-weight:bold">
               <td>Date</td>
               <td>Amount</td>
@@ -67,7 +70,6 @@
           <?php
             $total=0;
           ?>
-           @if(isset($transactions))
             @foreach($transactions as $transact)
              <tr>
                 <td>
@@ -83,8 +85,7 @@
               <?php
                 $total+=$amount;
               ?>
-              @endforeach
-            @endif                         
+              @endforeach                       
           </tbody>
       </table>      
         <p style="margin-top:3%; margin-left: 26%;">
