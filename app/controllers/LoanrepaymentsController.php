@@ -294,8 +294,8 @@ class LoanrepaymentsController extends \BaseController {
 			$amount=$g->amount;
 			$fraction=$amount/$loanamount;	
 			$reduceamount=$fraction * $repayamount;
-			$reduced=$amount- $reduceamount;											
-				Loanguarantor::where('member_id','=',$member)
+			$reduced=$amount- $reduceamount;								
+            Loanguarantor::where('member_id','=',$member)
 			  ->where('loanaccount_id','=',$loanaccount)
 			  ->update(['amount'=>$reduced]);	
 		}
