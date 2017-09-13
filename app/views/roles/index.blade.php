@@ -1,9 +1,13 @@
 @extends('layouts.system')
 @section('content')
-
-
-
-
+@if(Session::has('notice'))
+  <div class="alert alert-danger alert-dismissible fade in" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>{{{ Session::get('notice')}}}</strong> 
+  </div>      
+@endif  
 <div class="row">
 
 	<div class="col-lg-12">
@@ -18,8 +22,6 @@
 
 				<table id="users" class="display compact table table-bordered table-striped" cellspacing="0" width="100%">
 					<thead>
-						
-						
 						<th>Role</th>
 						<th></th>
 						
@@ -36,12 +38,9 @@
   								<button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
     								Action <span class="caret"></span>
   								</button>
-  				
   								<ul class="dropdown-menu" role="menu">
-                    <li><a href="{{URL::to('roles/permissions/'.$role->id)}}">Permissions</a></li>
+                                    <li><a href="{{URL::to('roles/show/'.$role->id)}}">View</a></li>
     								<li><a href="{{URL::to('roles/edit/'.$role->id)}}">Edit</a></li>
-
-    								
     								<li><a href="{{URL::to('roles/destroy/'.$role->id)}}">Delete</a></li>
   								</ul>
 							</div>

@@ -10,7 +10,14 @@ function asMoney($value) {
 }
 
 ?>
-
+@if(Session::has('notice'))
+  <div class="alert alert-danger alert-dismissible fade in" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>{{{ Session::get('notice')}}}</strong> 
+  </div>      
+@endif  
 <div class="row">
 	<div class="col-lg-12">
   <h3>Journal Entries</h3>

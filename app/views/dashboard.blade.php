@@ -24,6 +24,14 @@
 	<div class="main_dashboard">
 	    <img src="{{ URL::asset('site/img/xara.jpg') }}" width="50%" alt="Xara Financials">      
       <div class="col-lg-12">
+          @if(Session::has('notice2'))
+      <div class="alert alert-danger alert-dismissible fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>{{{ Session::get('notice2')}}}</strong> 
+      </div>      
+    @endif  
     @if(Session::get('notice'))
             <div class="alert">{{{ Session::get('notice') }}}</div>
         @endif
@@ -35,13 +43,15 @@
     <table id="users" class="table table-condensed table-bordered table-responsive table-hover">
       <thead>
         <th>#</th>
-        <th>{{{ Lang::get('messages.table.number') }}}</th>
-        <th>{{{ Lang::get('messages.table.name') }}}</th>
-        <th>{{{ Lang::get('messages.table.branch') }}}</th>
+        <th>Member Number</th>
+        <th>Member Name</th>
+        <th>Branch Name</th>
+        <th>Phone Number</th>
+        <th>ID Number</th>
         <th></th>
-         <th></th>
-         <th></th>
-         <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
       </thead>
       <tbody>
         <?php $i = 1; ?>
@@ -51,6 +61,8 @@
           <td>{{ $member->membership_no }}</td>
           <td>{{ $member->name }}</td>
           <td>{{ $member->branch->name }}</td>
+          <td>{{ $member->phone }}</td>
+          <td>{{ $member->id_number }}</td>
           <td>
              <a href="{{ URL::to('member/savingaccounts/'.$member->id) }}" class="btn btn-info btn-sm">{{{ Lang::get('messages.savings') }}}</a>
            </td>

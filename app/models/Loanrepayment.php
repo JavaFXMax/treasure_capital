@@ -32,33 +32,42 @@ class Loanrepayment extends \Eloquent {
 
 		$amount = array_get($data, 'amount');
 		$date = array_get($data, 'date');
-
+        //Create a transaction record
+        $transaction = new Loantransaction;
+		$transaction->loanaccount()->associate($loanaccount);
+		$transaction->date = $date;
+		$transaction->description = 'loan repayment';
+		$transaction->amount = $amount;
+		$transaction->type = 'credit';
+		$transaction->save();
+		Audit::logAudit($date, Confide::user()->username, 'loan repayment', 'Loans', $amount);
 
 		$principal_due = Loantransaction::getPrincipalDue($loanaccount);
 		$interest_due = Loantransaction::getInterestDue($loanaccount);
+        $insurance_due= Loantransaction::getInsuranceDue($loanaccount);
 
-		$total_due = $principal_due + $interest_due;
+		$total_due = $principal_due + $interest_due + $insurance_due;
 
 		$payamount = $amount;
 
-
  	    if($payamount < $total_due){
-
 			//pay interest first
-			Loanrepayment::payInterest($loanaccount, $date, $interest_due);
-			$payamount = $payamount - $interest_due;
+			Loanrepayment::payInterest($loanaccount, $date, $interest_due,$transaction);
+            Loanrepayment::payInsurance($loanaccount, $date, $insurance_due,$transaction);
+			$payamount = $payamount - ($interest_due + $insurance_due);
 			if($payamount > 0){
-				Loanrepayment::payPrincipal($loanaccount, $date, $payamount);
+				Loanrepayment::payPrincipal($loanaccount, $date, $payamount,$transaction);
 			}
 		}
 
 
 		if($payamount >= $total_due){
 			//pay interest first 
-			Loanrepayment::payInterest($loanaccount, $date, $interest_due);
-			$payamount = $payamount - $interest_due;
+			Loanrepayment::payInterest($loanaccount, $date, $interest_due,$transaction);
+			Loanrepayment::payInsurance($loanaccount, $date, $insurance_due,$transaction);
+			$payamount = $payamount - ($interest_due + $insurance_due);
 			//pay principal with the remaining amount
-			Loanrepayment::payPrincipal($loanaccount, $date, $payamount);
+			Loanrepayment::payPrincipal($loanaccount, $date, $payamount,$transaction);
 		}
 		/*
 		do {
@@ -100,7 +109,7 @@ class Loanrepayment extends \Eloquent {
 		} while($payamount > 0);
 
 	*/
-		Loantransaction::repayLoan($loanaccount, $amount, $date);
+		//Loantransaction::repayLoan($loanaccount, $amount, $date);
 	}
 
 	public static function offsetLoan($data){
@@ -117,11 +126,12 @@ class Loanrepayment extends \Eloquent {
 		Loantransaction::repayLoan($loanaccount, $amount, $date);
 	}
 
-	public static function payPrincipal($loanaccount, $date, $principal_due){
+	public static function payPrincipal($loanaccount, $date, $principal_due,$transaction){
 		$repayment = new Loanrepayment;
 		$repayment->loanaccount()->associate($loanaccount);
 		$repayment->date = $date;
-		$repayment->principal_paid = $principal_due;		
+		$repayment->principal_paid = $principal_due;	
+        $repayment->transaction_id=$transaction->id;
 		$repayment->save();
 		$account = Loanposting::getPostingAccount($loanaccount->loanproduct, 'principal_repayment');
 		$data = array(
@@ -136,11 +146,12 @@ class Loanrepayment extends \Eloquent {
 		$journal->journal_entry($data);
 	}
 
-	public static function payInterest($loanaccount, $date, $interest_due){
+	public static function payInterest($loanaccount, $date, $interest_due,$transaction){
 		$repayment = new Loanrepayment;
 		$repayment->loanaccount()->associate($loanaccount);
 		$repayment->date = $date;
 		$repayment->interest_paid = $interest_due;
+        $repayment->transaction_id=$transaction->id;
 		$repayment->save();
 		$account = Loanposting::getPostingAccount($loanaccount->loanproduct, 'interest_repayment');
 		$data = array(
@@ -150,6 +161,26 @@ class Loanrepayment extends \Eloquent {
 			'amount' => $interest_due,
 			'initiated_by' => 'system',
 			'description' => 'interest repayment'
+			);
+		$journal = new Journal;
+		$journal->journal_entry($data);
+	}
+    
+    public static function payInsurance($loanaccount, $date, $insurance_due,$transaction){
+		$repayment = new Loanrepayment;
+		$repayment->loanaccount()->associate($loanaccount);
+		$repayment->date = $date;
+		$repayment->insurance_paid = $insurance_due;
+        $repayment->transaction_id=$transaction->id;
+		$repayment->save();
+		$account = Loanposting::getPostingAccount($loanaccount->loanproduct, 'principal_repayment');
+		$data = array(
+			'credit_account' =>$account['credit'] , 
+			'debit_account' =>$account['debit'] ,
+			'date' => $date,
+			'amount' => $insurance_due,
+			'initiated_by' => 'system',
+			'description' => 'insurance payment'
 			);
 		$journal = new Journal;
 		$journal->journal_entry($data);

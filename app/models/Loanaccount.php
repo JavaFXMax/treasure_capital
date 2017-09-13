@@ -85,10 +85,13 @@ class Loanaccount extends \Eloquent {
 		$member = Member::findorfail($member_id);
 
 		$loanproduct = Loanproduct::findorfail($loanproduct_id);
-		//start refinance the loan 
-		$refinance=Loanaccount::refinance($member,$loanproduct);
+		//start refinance the loan
+        /**
+            $refinance=Loanaccount::refinance($member,$loanproduct);
+        **/
         //end refinance
-		$amount_applied=array_get($data,'amount_applied') - $refinance;
+        $insurance_amount=Loanaccount::insureLoan(array_get($data, 'repayment_duration'),array_get($data, 'amount_applied'));
+		$amount_applied=array_get($data,'amount_applied')+$insurance_amount;
 		//Submit Application
 		$application = new Loanaccount;
 		$application->member()->associate($member);
@@ -101,6 +104,7 @@ class Loanaccount extends \Eloquent {
 		}
 		$application->interest_rate = $loanproduct->interest_rate;
 		$application->period = $loanproduct->period;
+        $application->insurance_amount = $insurance_amount;
 		$application->repayment_duration = array_get($data, 'repayment_duration');
 		$application->account_number = Loanaccount::loanAccountNumber($application);
 		$application->save();
@@ -354,15 +358,21 @@ class Loanaccount extends \Eloquent {
 
 		Order::submitOrder($product, $member);
 	}
+
+    public static function insureLoan($period,$amount){
+        $a=$period+3.03;
+        $b=$amount/6000;
+        $insurance_amount=5.03*$a*$b;
+        
+        return $insurance_amount;
+    }
+    
 	public static function loanAccountNumber($loanaccount){
 		
 		$member = Member::find($loanaccount->member->id);
 
 		$count = count($member->loanaccounts);
 		$count = $count + 1;
-
-		//$count = DB::table('loanproducts')->where('member_id', '=', $loanaccount->member->id)->count();
-
 		$loanno = $loanaccount->loanproduct->short_name."-".$loanaccount->member->membership_no."-".$count;
 
 		return $loanno;

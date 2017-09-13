@@ -302,10 +302,17 @@ Route::post('transaudits', function(){
 });
 
 // Confide routes
-Route::get('users/create', 'UsersController@create');
-Route::get('users/edit/{user}', 'UsersController@edit');
-Route::post('users/update/{user}', 'UsersController@update');
-Route::post('users', 'UsersController@store');
+Route::group(['before' => 'create_users'], function() {
+    Route::get('users/create', 'UsersController@create');
+    Route::get('users/edit/{user}', 'UsersController@edit');
+    Route::post('users/update/{user}', 'UsersController@update');
+    Route::post('users', 'UsersController@store');
+    Route::get('users/add', 'UsersController@add');
+    Route::post('users/newuser', 'UsersController@newuser');
+    
+    Route::get('tellers/create/{id}', 'UsersController@createteller');
+    Route::get('credits/create/{id}', 'UsersController@createcredit');
+});
 Route::get('users/login', 'UsersController@login');
 Route::post('users/login', 'UsersController@doLogin');
 Route::get('users/confirm/{code}', 'UsersController@confirm');
@@ -315,52 +322,51 @@ Route::get('users/reset_password/{token}', 'UsersController@resetPassword');
 Route::post('users/reset_password', 'UsersController@doResetPassword');
 Route::get('users/logout', 'UsersController@logout');
 Route::resource('users', 'UsersController');
-Route::get('users/activate/{user}', 'UsersController@activate');
-Route::get('users/deactivate/{user}', 'UsersController@deactivate');
-Route::get('users/destroy/{user}', 'UsersController@destroy');
+Route::group(['before' => 'deactivate_users'], function() {
+    Route::get('users/activate/{user}', 'UsersController@activate');
+    Route::get('users/deactivate/{user}', 'UsersController@deactivate');
+    Route::get('users/destroy/{user}', 'UsersController@destroy');
+    Route::get('tellers/activate/{id}', 'UsersController@activateteller');
+    Route::get('tellers/deactivate/{id}', 'UsersController@deactivateteller');
+    Route::get('credits/activate/{id}', 'UsersController@activatecredit');
+    Route::get('credits/deactivate/{id}', 'UsersController@deactivatecredit');
+});
 Route::get('users/password/{user}', 'UsersController@Password');
 Route::post('users/password/{user}', 'UsersController@changePassword');
 Route::get('users/profile/{user}', 'UsersController@profile');
-Route::get('users/add', 'UsersController@add');
-Route::post('users/newuser', 'UsersController@newuser');
 
 Route::get('tellers', 'UsersController@tellers');
-Route::get('tellers/create/{id}', 'UsersController@createteller');
-Route::get('tellers/activate/{id}', 'UsersController@activateteller');
-Route::get('tellers/deactivate/{id}', 'UsersController@deactivateteller');
+
 
 Route::get('credits', 'UsersController@credits');
-Route::get('credits/create/{id}', 'UsersController@createcredit');
-Route::get('credits/activate/{id}', 'UsersController@activatecredit');
-Route::get('credits/deactivate/{id}', 'UsersController@deactivatecredit');
 
 Route::get('members/profile', 'UsersController@password2');
 Route::post('users/pass', 'UsersController@changePassword2');
 
 
 Route::resource('roles', 'RolesController');
-Route::get('roles/create', 'RolesController@create');
-Route::get('roles/edit/{id}', 'RolesController@edit');
-Route::post('roles/update/{id}', 'RolesController@update');
-Route::get('roles/delete/{id}', 'RolesController@destroy');
-
+Route::group(['before' => 'create_roles'], function() {
+    Route::get('roles/create', 'RolesController@create');
+    Route::get('roles/edit/{id}', 'RolesController@edit');
+    Route::post('roles/update/{id}', 'RolesController@update');
+});
+Route::group(['before' => 'deactivate_roles'], function() {
+    Route::get('roles/delete/{id}', 'RolesController@destroy');
+});
+Route::group(['before' => 'view_roles'], function() {
+    Route::get('roles/show/{id}', 'RolesController@show');
+});
 Route::get('import', function(){
-
     return View::make('import');
 });
 
 
 Route::get('automated/loans', function(){
-
-    
     $loanproducts = Loanproduct::all();
-
     return View::make('autoloans', compact('loanproducts'));
 });
 
 Route::get('automated/savings', function(){
-
-    
    $savingproducts = Savingproduct::all();
 
     return View::make('automated', compact('savingproducts'));
@@ -446,7 +452,6 @@ Route::get('system', function(){
 
 Route::get('license', function(){
 
-
     $organization = Organization::find(1);
 
     return View::make('system.license', compact('organization'));
@@ -511,22 +516,24 @@ Route::post('groups/update/{id}', 'GroupsController@update');
 Route::get('groups/delete/{id}', 'GroupsController@destroy');
 Route::get('groups/edit/{id}', 'GroupsController@edit');
 
-
-
 Route::resource('members', 'MembersController');
-Route::post('members/update/{id}', 'MembersController@update');
-Route::post('member/update/{id}', 'MembersController@update');
-Route::get('members/delete/{id}', 'MembersController@destroy');
-Route::get('members/edit/{id}', 'MembersController@edit');
-Route::get('member/edit/{id}', 'MembersController@edit');
+Route::group(['before' => 'create_member'], function() {
+    Route::post('members/update/{id}', 'MembersController@update');
+    Route::post('member/update/{id}', 'MembersController@update');
+    Route::get('members/delete/{id}', 'MembersController@destroy');
+    Route::get('members/edit/{id}', 'MembersController@edit');
+    Route::get('member/edit/{id}', 'MembersController@edit');
+    Route::post('deldoc', 'MembersController@deletedoc');
+});
 Route::get('members/show/{id}', 'MembersController@show');
 Route::get('member/show/{id}', 'MembersController@show');
-Route::post('deldoc', 'MembersController@deletedoc');
+
 Route::get('members/loanaccounts/{id}', 'MembersController@loanaccounts');
 Route::get('memberloans', 'MembersController@loanaccounts2');
 Route::group(['before' => 'limit'], function() {
-
-    Route::get('members/create', 'MembersController@create');
+    Route::group(['before' => 'create_member'], function() {
+        Route::get('members/create', 'MembersController@create');
+    });
 });
 
 Route::resource('kins', 'KinsController');
@@ -538,19 +545,26 @@ Route::get('kins/create/{id}', 'KinsController@create');
 
 
 Route::resource('accounts', 'AccountsController');
-Route::post('accounts/update/{id}', 'AccountsController@update');
-Route::get('accounts/delete/{id}', 'AccountsController@destroy');
-Route::get('accounts/edit/{id}', 'AccountsController@edit');
-Route::get('accounts/show/{id}', 'AccountsController@show');
-Route::get('accounts/create/{id}', 'AccountsController@create');
-
+Route::group(['before' => 'deactivate_accounts'], function() {
+    Route::get('accounts/delete/{id}', 'AccountsController@destroy');
+});
+Route::group(['before' => 'create_accounts'], function() {
+    Route::get('accounts/create/{id}', 'AccountsController@create');
+    Route::get('accounts/edit/{id}', 'AccountsController@edit');
+    Route::post('accounts/update/{id}', 'AccountsController@update');
+});
+Route::group(['before' => 'view_accounts'], function() {
+    Route::get('accounts/show/{id}', 'AccountsController@show');
+});
 
 
 
 Route::resource('journals', 'JournalsController');
-Route::post('journals/update/{id}', 'JournalsController@update');
-Route::get('journals/delete/{id}', 'JournalsController@destroy');
-Route::get('journals/edit/{id}', 'JournalsController@edit');
+Route::group(['before' => 'create_journal'], function() {
+    Route::post('journals/update/{id}', 'JournalsController@update');
+    Route::get('journals/delete/{id}', 'JournalsController@destroy');
+    Route::get('journals/edit/{id}', 'JournalsController@edit');
+});
 Route::get('journals/show/{id}', 'JournalsController@show');
 
 
@@ -566,10 +580,13 @@ Route::get('charges/enable/{id}', 'ChargesController@enable');
 Route::resource('savingproducts', 'SavingproductsController');
 Route::get('savingproducts/update/{id}','SavingproductsController@selectproduct');
 Route::post('savingproducts/update', 'SavingproductsController@update');
-Route::get('savingproducts/delete/{id}', 'SavingproductsController@destroy');
+Route::group(['before' => 'delete_savingproduct'], function() {
+    Route::get('savingproducts/delete/{id}', 'SavingproductsController@destroy');
+});
 Route::get('savingproducts/edit/{id}', 'SavingproductsController@edit');
-Route::get('savingproducts/show/{id}', 'SavingproductsController@show');
-
+Route::group(['before' => 'view_savingproduct'], function() {
+    Route::get('savingproducts/show/{id}', 'SavingproductsController@show');
+});
 
 Route::resource('monthlyremittances', 'RemittancesController');
 Route::post('monthlyremittances/update/{id}', 'RemittancesController@update');
@@ -578,21 +595,23 @@ Route::get('monthlyremittances/edit/{id}', 'RemittancesController@edit');
 Route::get('monthlyremittances/show/{id}', 'RemittancesController@show');
 
 Route::resource('savingaccounts', 'SavingaccountsController');
-Route::get('savingaccounts/create/{id}', 'SavingaccountsController@create');
+Route::group(['before' => 'open_saving_account'], function() {
+    Route::get('savingaccounts/create/{id}', 'SavingaccountsController@create');
+});
 Route::get('member/savingaccounts/{id}', 'SavingaccountsController@memberaccounts');
-
-
-
-Route::get('savingtransactions/show/{id}', 'SavingtransactionsController@show');
-Route::resource('savingtransactions', 'SavingtransactionsController');
-Route::get('savingtransactions/create/{id}', 'SavingtransactionsController@create');
-Route::get('membersavingtransactions/create/{id}', 'SavingtransactionsController@create');
-Route::get('savingtransactions/receipt/{id}', 'SavingtransactionsController@receipt');
-Route::get('savingtransactions/statement/{id}', 'SavingtransactionsController@statement');
-Route::get('savingtransactions/void/{id}', 'SavingtransactionsController@void');
-
-Route::post('savingtransactions/import', 'SavingtransactionsController@import');
-
+Route::group(['before' => 'view_savings_account'], function() {
+    Route::get('savingtransactions/show/{id}', 'SavingtransactionsController@show');
+});
+Route::group(['before' => 'view_savings_account'], function() {
+    Route::resource('savingtransactions', 'SavingtransactionsController');
+    Route::get('savingtransactions/create/{id}', 'SavingtransactionsController@create');
+    Route::get('membersavingtransactions/create/{id}', 'SavingtransactionsController@create');
+    Route::get('savingtransactions/receipt/{id}', 'SavingtransactionsController@receipt');
+    Route::get('savingtransactions/statement/{id}', 'SavingtransactionsController@statement');
+    Route::get('savingtransactions/void/{id}', 'SavingtransactionsController@void');
+    Route::post('savingtransactions/import', 'SavingtransactionsController@import');
+    Route::post('savingtransactions/lateness','SavingtransactionsController@lateness');
+});
 //Route::resource('savingpostings', 'SavingpostingsController');
 
 
@@ -613,7 +632,7 @@ Route::post('sharecapital/editparameters','SharesController@doparameterize');
 Route::get('sharetransactions/show/{id}', 'SharetransactionsController@show');
 Route::resource('sharetransactions', 'SharetransactionsController');
 Route::get('sharetransactions/create/{id}', 'SharetransactionsController@create');
-
+Route::get('sharetransactions/receipt/{id}', 'SharetransactionsController@receipt');
 
 Route::resource('sharereports', 'sharereportsController');
 Route::get('sharereports/individualcontribution', 'sharereportsController@show');
@@ -627,10 +646,18 @@ Route::get('license/activate/{id}', 'OrganizationsController@activate_license_fo
 
 
 Route::resource('loanproducts', 'LoanproductsController');
-Route::post('loanproducts/update/{id}', 'LoanproductsController@update');
-Route::get('loanproducts/delete/{id}', 'LoanproductsController@destroy');
-Route::get('loanproducts/edit/{id}', 'LoanproductsController@edit');
-Route::get('loanproducts/show/{id}', 'LoanproductsController@show');
+Route::group(['before' => 'edit_loan_product'], function() {
+    Route::post('loanproducts/update/{id}', 'LoanproductsController@update');
+});
+Route::group(['before' => 'delete_loan_product'], function() {
+    Route::get('loanproducts/delete/{id}', 'LoanproductsController@destroy');
+});
+Route::group(['before' => 'edit_loan_product'], function() {
+    Route::get('loanproducts/edit/{id}', 'LoanproductsController@edit');
+});
+Route::group(['before' => 'view_loan_product'], function() {
+    Route::get('loanproducts/show/{id}', 'LoanproductsController@show');
+});
 Route::get('memberloanshow/{id}', 'LoanproductsController@memberloanshow');
 
 Route::resource('disbursements','DisbursementController');
@@ -667,7 +694,9 @@ Route::get('loanguarantors/cssedit/{id}', 'LoanguarantorsController@cssedit');
 
 
 Route::resource('loans', 'LoanaccountsController');
-Route::get('loans/apply/{id}', 'LoanaccountsController@apply');
+Route::group(['before' => 'create_loan_account'], function() {
+ Route::get('loans/apply/{id}', 'LoanaccountsController@apply');
+});
 Route::get('guarantorapproval', 'LoanaccountsController@guarantor');
 Route::post('loans/apply', 'LoanaccountsController@doapply');
 Route::post('loans/application', 'LoanaccountsController@doapply2');
@@ -686,19 +715,22 @@ Route::post('shopapplication', 'LoanaccountsController@shopapplication');
 
 Route::get('loans/edit/{id}', 'LoanaccountsController@edit');
 Route::post('loans/update/{id}', 'LoanaccountsController@update');
-
-Route::get('loans/approve/{id}', 'LoanaccountsController@approve');
-Route::post('loans/approve/{id}', 'LoanaccountsController@doapprove');
+Route::group(['before' => 'approve_loan_account'], function() {
+    Route::get('loans/approve/{id}', 'LoanaccountsController@approve');
+    Route::post('loans/approve/{id}', 'LoanaccountsController@doapprove');
+});
 Route::post('gurantorapprove/{id}', 'LoanaccountsController@guarantorapprove');
 Route::post('gurantorreject/{id}', 'LoanaccountsController@guarantorreject');
 
 Route::get('loans/reject/{id}', 'LoanaccountsController@reject');
 Route::post('rejectapplication', 'LoanaccountsController@rejectapplication');
-
-Route::get('loans/disburse/{id}', 'LoanaccountsController@disburse');
-Route::post('loans/disburse/{id}', 'LoanaccountsController@dodisburse');
-
-Route::get('loans/show/{id}', 'LoanaccountsController@show');
+Route::group(['before' => 'approve_loan'], function() {
+    Route::get('loans/disburse/{id}', 'LoanaccountsController@disburse');
+    Route::post('loans/disburse/{id}', 'LoanaccountsController@dodisburse');
+});
+Route::group(['before' => 'view_loan_account'], function() {
+    Route::get('loans/show/{id}', 'LoanaccountsController@show');
+});
 Route::get('memberloan/show/{id}', 'LoanaccountsController@show');
 
 Route::post('loans/amend/{id}', 'LoanaccountsController@amend');

@@ -84,12 +84,6 @@ Route::filter('auth', function()
 });
 
 
-Route::filter('mobile', function()
-{
-	$user_id = Input::get('user_id');
-	
-});
-
 Route::filter('auth.basic', function()
 {
 	return Auth::basic();
@@ -128,4 +122,214 @@ Route::filter('csrf', function()
 	{
 		throw new Illuminate\Session\TokenMismatchException;
 	}
+});
+
+
+Route::filter('edit_loan_product', function()
+{
+    if (! Entrust::can('edit_loan_product') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('view_loan_product', function()
+{
+    if (! Entrust::can('view_loan_product') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('delete_loan_product', function()
+{
+    if (! Entrust::can('delete_loan_product') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('create_loan_account', function()
+{
+    if (! Entrust::can('create_loan_account') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('edit_loan_product', function()
+{
+    if (! Entrust::can('edit_loan_product') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+
+Route::filter('view_loan_account', function()
+{
+    if (! Entrust::can('view_loan_account') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('approve_loan_account', function()
+{
+    if (! Entrust::can('approve_loan_account') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('create_savingproduct', function()
+{
+    if (! Entrust::can('create_savingproduct') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('view_savingproduct', function()
+{
+    if (! Entrust::can('view_savingproduct') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('delete_savingproduct', function()
+{
+    if (! Entrust::can('delete_savingproduct') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('disburse_loan', function()
+{
+    if (! Entrust::can('disburse_loan') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('view_savings_account', function()
+{
+    if (! Entrust::can('view_savings_account') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('open_saving_account', function()
+{
+    if (! Entrust::can('open_saving_account') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('create_member', function()
+{
+    if (! Entrust::can('create_member') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice2', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('deactivate_member', function()
+{
+    if (! Entrust::can('deactivate_member') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('update_member', function()
+{
+    if (! Entrust::can('update_member') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('view_users', function()
+{
+    if (! Entrust::can('view_users') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('create_users', function()
+{
+    if (! Entrust::can('create_users') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('deactivate_users', function()
+{
+    if (! Entrust::can('deactivate_users') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('create_roles', function()
+{
+    if (! Entrust::can('create_roles') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('view_roles', function()
+{
+    if (! Entrust::can('view_roles') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('deactivate_roles', function()
+{
+    if (! Entrust::can('deactivate_roles') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('create_accounts', function()
+{
+    if (! Entrust::can('create_accounts') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('view_accounts', function()
+{
+    if (! Entrust::can('view_accounts') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('deactivate_accounts', function()
+{
+    if (! Entrust::can('deactivate_accounts') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
+});
+
+Route::filter('create_journals', function()
+{
+    if (! Entrust::can('create_journals') ) // Checks the current user
+    {
+        return Redirect::back()->with('notice', 'You do not have access to this resource. Contact your system admin');
+    }
 });

@@ -9,13 +9,13 @@
 
 		<br/>
 
-      <form method="POST" action="{{{ URL::to('roles') }}}" accept-charset="UTF-8">
+      <form method="POST" action="{{{ URL::to('roles/update/'.$role->id) }}}" accept-charset="UTF-8">
         
    
     <fieldset>
         <div class="form-group">
             <label for="name">Role Name</label>
-            <input class="form-control" placeholder="role name" type="text" name="name" id="name" value="{{{ Input::old('name') }}}">
+            <input class="form-control" placeholder="role name" type="text" name="name" id="name" value="{{$role->name}}">
         </div>
         
 
@@ -66,13 +66,15 @@
 
 
          
-
+             
             <td>
-
-              <input type="checkbox" name="permission[]" value="{{ $perm->id }}"> {{$perm->display_name}}
-
-
+               @if(in_array($perm->name, $roleperm))
+              <input type="checkbox" name="permission[]" value="{{ $perm->id }}" checked="checked"> {{$perm->display_name}}
+              @else
+              <input type="checkbox" name="permission[]" value="{{ $perm->id }}" > {{$perm->display_name}}
+               @endif
             </td>
+
 
          
 
@@ -105,7 +107,7 @@
         
         <div class="form-actions form-group">
         
-          <button type="submit" class="btn btn-primary btn-sm">Create</button>
+          <button type="submit" class="btn btn-primary btn-sm">Update</button>
         </div>
 
     </fieldset>

@@ -167,5 +167,7 @@ class SharesController extends \BaseController {
 		Share::destroy($id);
 		return Redirect::route('shares.index');
 	}
+    
+    
 
 }

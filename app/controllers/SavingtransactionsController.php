@@ -249,12 +249,17 @@ if (($handle = fopen(public_path().'/uploads/savings/'.$photo, "r")) !== FALSE) 
 
 
 	public function void($id){
-
 		Savingtransaction::destroy($id);
-
 		 return Redirect::back()->with('notice', ' transaction has been successfully voided');
 	}
 
-
+    /*Charge Late payment*/
+    public function lateness(){
+        $savingaccount=Input::get('account_id');
+        $amount=Input::get('amount');
+        $type='debit';
+        Savingtransaction::latePayment($savingaccount,$amount,$type);
+        return Redirect::back()->with('ack', 'Lateness charge received successfully!!');
+    }
 
 }

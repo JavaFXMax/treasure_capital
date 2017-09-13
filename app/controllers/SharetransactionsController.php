@@ -125,9 +125,7 @@ class SharetransactionsController extends \BaseController {
 		{
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
-
 		$sharetransaction->update($data);
-
 		return Redirect::route('sharetransactions.index');
 	}
 
@@ -143,5 +141,13 @@ class SharetransactionsController extends \BaseController {
 
 		return Redirect::route('sharetransactions.index');
 	}
+    
+    public function receipt($id){
+        $transaction = Sharetransaction::findOrFail($id);
+		$organization = Organization::findOrFail(1);
+		$pdf = PDF::loadView('sharereports.pdf.receipt', compact('transaction', 'organization'))->setPaper('a6')
+            ->setOrientation('potrait');;
+		return $pdf->stream('Share Receipt.pdf');
+    }
 
 }

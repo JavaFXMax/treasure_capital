@@ -39,17 +39,12 @@
            
            </select>
         </div>
-        
-        
-        
          <input type="hidden" name="account_id" value="{{ $shareaccount->id}}">
-        
-
         <div class="form-group">
             <label for="username"> Date</label>
             <div class="right-inner-addon ">
             <i class="glyphicon glyphicon-calendar"></i>
-            <input class="form-control datepicker" placeholder="" readonly type="text" name="date" id="date" value="{{{ Input::old('date') }}}" required>
+            <input class="form-control datepicker" placeholder="" readonly type="text" name="date" id="date" value="{{date('Y-m-d')}}" required>
         </div>
         </div>
 

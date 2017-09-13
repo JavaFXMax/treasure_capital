@@ -64,6 +64,14 @@ class Loantransaction extends \Eloquent {
 		return $principal_due;
 	}
 
+    public static function getInsuranceDue($loanaccount){
+        $insurance=$loanaccount->insurance_amount;
+        $period=$loanaccount->repayment_duration;
+        $insurance_due=$insurance/$period;
+        
+        return $insurance_due;
+    }
+    
 	public static function getInterestDue($loanaccount){
 		$remaining_period = Loantransaction::getRemainingPeriod($loanaccount);
 		$principal_paid = Loanrepayment::getPrincipalPaid($loanaccount);

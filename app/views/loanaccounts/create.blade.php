@@ -154,7 +154,7 @@ $('#loanproduct_id').change(function(){
               <i class="glyphicon glyphicon-calendar"></i>
               <input class="form-control datepicker" readonly placeholder="" type="text"
                  name="application_date" id="application_date" 
-                 value="{{{ Input::old('application_date') }}}">
+                 value="{{date('Y-m-d')}}">
             </div>
         </div>
         <div class="form-group col-lg-6">

@@ -29,7 +29,7 @@
     <fieldset>
         <div class="form-group">
             <label for="username">Date</label>
-            <input class="form-control" placeholder="" type="text" name="date" id="date" value="{{{ Input::old('date') }}}">
+            <input class="form-control" placeholder="" type="text" name="date" id="date" value="{{date('Y-m-d')}}">
         </div>
         
         <div class="form-group">

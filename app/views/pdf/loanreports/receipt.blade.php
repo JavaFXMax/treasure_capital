@@ -1,11 +1,7 @@
-
 <?php
-
-
 function asMoney($value) {
   return number_format($value, 2);
 }
-
 ?>
 <html>
   <head>
@@ -16,22 +12,12 @@ function asMoney($value) {
      .footer .page:after { content: counter(page, upper-roman); }
    </style>
   <body>
-
-
-    
    <div class="header">
      <table >
-
       <tr>
-
-
-       
         <td style="width:150px">
-
             <img src="{{ asset('../images/logo.png') }}" alt="{{ $organization->logo }}" width="150px"/>
-    
         </td>
-
         <td>
         <strong>
           {{ strtoupper($organization->name)}}<br>
@@ -40,22 +26,11 @@ function asMoney($value) {
           {{ $organization->email}} |
           {{ $organization->website}}<br>
           {{ $organization->address}}
-       
-
         </td>
-        
-        
-
       </tr>
-
-
       <tr>
-
         <hr>
       </tr>
-
-
-
     </table>
    </div>
    <div class="footer">
@@ -89,54 +64,33 @@ function asMoney($value) {
         <td>Branch :</td><td> {{ $transaction->loanaccount->member->branch->name}}</td>
 
       </tr>
-
-
       <tr>
-
         <hr>
       </tr>
-
-
-
     </table>
-
-<br><br>
-
+       <br><br>
      <table class="table table-bordered">
-
-
-      <tr style="padding:20px">
-
-        <td style="padding:10px"> <strong> Date </strong></td>
-        <td style="padding:10px"> <strong> Description </strong></td>
-        <td style="padding:10px"><strong> Amount </strong></td>
-
-      </tr>
-
-      <tr style="padding:20px">
-
-        <td style="padding:10px; width:100px">{{ $transaction->date }}</td>
-        <td style="padding:10px">{{ $transaction->description }}</td>
-        <td style="padding:10px">{{ asMoney($transaction->amount )}}</td>
-       
-        
-      </tr>
-      
-
-
       <tr>
-
-        <hr>
+        <td style="padding:5px"> <strong> Date </strong></td>
+        <td style="padding:5px"> <strong> Description </strong></td>
+        <td style="padding:5px"> <strong> Interest </strong></td>
+        <td style="padding:5px"> <strong> Insurance </strong></td>
+        <td style="padding:5px"> <strong> Principal </strong></td>
+        <td style="padding:5px"><strong> Total </strong></td>
       </tr>
-
-
-
+      <tr>
+        <td style="padding:5px; width:75px">{{ $transaction->date }}</td>
+        <td style="padding:5px; width:100px">{{ $transaction->description }}</td>
+        <td style="padding:5px">{{ asMoney($interest_paid )}}</td>
+        <td style="padding:5px">{{ asMoney($insurance_paid )}}</td>
+        <td style="padding:5px">{{ asMoney($principal_paid )}}</td>
+        <td style="padding:5px">{{ asMoney($transaction->amount )}}</td>
+      </tr>
+      <tr>
+      </tr>
     </table>
-
-
-<br><br>
-     
-     <p style="page-break-before: always;"></p>
+       <br><br>
+       <hr>
    </div>
  </body>
  </html>

@@ -16,20 +16,7 @@
           $counter=Dividend::count();
         ?>        
     <div class="panel panel-default">
-        @if($counter==0)
-            <div class="panel-heading">
-              <a href="{{URL::to('sharecapital/parameters')}}" class="btn btn-primary">
-               Set Dividend Settings
-              </a>
-            </div>
-        @endif
-        @if($counter>=1)
-            <div class="panel-heading">
-              <a href="{{URL::to('sharecapital/editparameters')}}"" class="btn btn-warning">
-                Update Dividend Settings
-              </a>
-            </div>
-        @endif
+        
     <div class="panel-body">
       <table id="users" class="table table-condensed table-bordered table-responsive table-hover">
       <thead>
@@ -37,7 +24,7 @@
         <th>Member #</th>
         <th>Member Name</th>
         <th>Shares</th>        
-        <th>Acc. Dividends</th>
+        <th>Dividends</th>
       </thead>
       <tbody>
         <?php 
@@ -89,8 +76,8 @@
           <td> {{ $i }}</td>
           <td>{{ $member->membership_no }}</td>
           <td>{{ $member->name }}</td>    
-          <td>{{asMoney($contributions=Sharetransaction::where('shareaccount_id','=',$member->id)->where('type','=','credit')->sum('amount')/$sharevalue)}}</td>
-          <td>{{asMoney($multiplier * $contributions)}}</td>
+          <td>{{asMoney($contributions=Sharetransaction::where('shareaccount_id','=',$member->id)->where('type','=','credit')->sum('amount'))}}</td>
+          <td>{{asMoney($contributions/40)}}</td>
         </tr>
         <?php $i++; ?>
         @endforeach

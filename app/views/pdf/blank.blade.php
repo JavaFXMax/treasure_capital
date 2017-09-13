@@ -19,7 +19,7 @@
        
         <td style="width:150px">
 
-            <img src="{{ asset('../images/logo.png') }}" alt="{{ $organization->logo }}" width="150px"/>
+            <img src="{{ asset('public/uploads/logo/'.$organization->logo)}}" width="150px">
     
         </td>
 

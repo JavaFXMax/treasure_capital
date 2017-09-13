@@ -212,17 +212,18 @@ class ReportsController extends \BaseController {
             $chama=Group::find($group);
             $pdf = PDF::loadView('pdf.groups.loans', compact('members',  'organization','chama','loans'))->setPaper('a4')->setOrientation('potrait');
             return $pdf->stream( $chama->name.' Group Loan Listing.pdf');
-        }
-        /** 
-            else if($type=='contributions'){
-                $organization=Organization::find(1);
-                $members= Member::where('group_id','=',$group)->get();
-                $chama=Group::find($group);
-                $pdf = PDF::loadView('pdf.groups.contributions', compact('members',  'organization','chama'))->setPaper('a4')->setOrientation('potrait');
-                return $pdf->stream( $chama->name.' Group Contribution Listing.pdf');
+        }else if($type=='combined'){
+            $organization=Organization::find(1);
+            $members= Member::where('group_id','=',$group)->get();
+            foreach($members as $member){
+                $loans=Loanaccount::where('member_id','=',$member->id)->get();
+                $savings = Savingaccount::where('member_id',$member->id)->get();
             }
-        **/
-        else if($type=='savings'){
+            /*return $loans;*/
+            $chama=Group::find($group);
+            $pdf = PDF::loadView('pdf.groups.combined', compact('members', 'savings','organization','chama','loans'))->setPaper('a4')->setOrientation('potrait');
+            return $pdf->stream( $chama->name.' Group Combined Report.pdf');
+        }else if($type=='savings'){
             $organization=Organization::find(1);
             $members= Member::where('group_id','=',$group)->get();
             foreach($members as $member){
@@ -233,6 +234,15 @@ class ReportsController extends \BaseController {
             $pdf = PDF::loadView('pdf.groups.savings', compact('savings','members',  'organization','chama'))->setPaper('a4')->setOrientation('potrait');
             return $pdf->stream( $chama->name.' Group Saving Listing.pdf');
         }
+        /** 
+            else if($type=='contributions'){
+                $organization=Organization::find(1);
+                $members= Member::where('group_id','=',$group)->get();
+                $chama=Group::find($group);
+                $pdf = PDF::loadView('pdf.groups.contributions', compact('members',  'organization','chama'))->setPaper('a4')->setOrientation('potrait');
+                return $pdf->stream( $chama->name.' Group Contribution Listing.pdf');
+            }
+        **/
         
     }
 

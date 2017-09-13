@@ -31,6 +31,7 @@
                         <option value="contributions">Contributions Listing</option>
                         -->
                         <option value="savings">Savings Listing</option>
+                        <option value="combined">Combined Report</option>
                     </select>
                 </div>
                 <div class="form-actions form-group">

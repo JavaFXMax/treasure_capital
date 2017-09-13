@@ -9,11 +9,6 @@
                     <li>
                         <a href="{{ URL::to('journals') }}"><i class="fa fa-barcode fa-fw"></i> Journal Entries</a>
                     </li>
-
-
-                    <li>
-                        <a href="{{ URL::to('journals/create') }}"><i class="fa fa-plus-sign fa-fw"></i> Add Journal Entry</a>
-                    </li>
                     <li>
                         <a href="{{ URL::to('assetManagement') }}"><i class="fa fa-barcode"></i> Asset Management</a>
                     </li>

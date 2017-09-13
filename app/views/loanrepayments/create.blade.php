@@ -54,7 +54,15 @@ function asMoney($value) {
         <tr>
           <td>Interest Due</td><td>{{ asMoney($interest_due) }}</td>
         </tr>
-          <td>Amount Due</td><td>{{ asMoney($principal_due + $interest_due)}}</td>
+        <tr>
+          <td>Insurance Due</td>
+            <?php
+                $insurance_due=Loantransaction::getInsuranceDue($loanaccount);
+            ?>
+            <td>{{ asMoney($insurance_due)}}</td>
+        </tr>
+        <tr>
+          <td>Amount Due</td><td>{{ asMoney($principal_due + $interest_due+$insurance_due)}}</td>
         </tr>
         </table>
         <input class="form-control" placeholder="" type="hidden" name="loanaccount_id" id="loanaccount_id" value="{{ $loanaccount->id }}">
@@ -62,7 +70,7 @@ function asMoney($value) {
             <label for="username">Repayment Date <span style="color:red">*</span></label>
             <div class="right-inner-addon ">
             <i class="glyphicon glyphicon-calendar"></i>
-            <input required class="form-control datepicker" readonly="readonly" placeholder="" type="text" name="date" id="date" value="{{{ Input::old('date') }}}">
+            <input required class="form-control datepicker" readonly="readonly" placeholder="" type="text" name="date" id="date" value="{{date('Y-m-d')}}">
         </div>
        </div>
        <!--BEGIN VERBOTEN -->

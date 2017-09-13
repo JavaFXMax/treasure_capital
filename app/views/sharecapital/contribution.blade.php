@@ -25,7 +25,9 @@
         <th>Member #</th>
         <th>Member Name</th>
         <th>Contributions</th>
-        <th>Shares</th>
+        <!--
+          <th>Shares</th>
+        -->
         <th></th>
       </thead>
       <tbody>
@@ -39,7 +41,9 @@
           <td>{{ $member->membership_no }}</td>
           <td>{{ $member->name }}</td>
           <td>{{asMoney($contributions=Sharetransaction::where('shareaccount_id','=',$member->id)->where('type','=','credit')->sum('amount'))}}</td>
-          <td>{{asMoney($contributions/$sharevalue)}}</td>
+            <!--
+            <td>{{asMoney($contributions/$sharevalue)}}</td>
+            -->
           <td>
             <div class="btn-group">
                   <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
