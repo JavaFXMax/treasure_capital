@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateproductCharges extends Migration {
+class XFormSaleTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,10 +12,11 @@ class CreateproductCharges extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('productCharges',function($table){
+		Schema::create('form_sales',function($table){
 			$table->increments('id');
-            $table->integer('product_id')->unsigned();
-            $table->integer('charge_id')->unsigned();			
+            $table->integer('member_id')->unsigned();
+            $table->string('trans_no');
+            $table->float('amount_paid',11,2)->default(0.00);
 			$table->timestamps();	
 		});		
 	}
@@ -27,6 +28,6 @@ class CreateproductCharges extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('productCharges');
+		Schema::drop('form_sales');
 	}
 }

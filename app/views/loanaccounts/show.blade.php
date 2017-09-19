@@ -1,4 +1,4 @@
-@extends('layouts.member')
+@extends('layouts.loans')
 @section('content')
 <br/>
 <?php
@@ -7,6 +7,14 @@ function asMoney($value) {
 }
 ?>
 <div class="row">
+        @if (Session::has('repayment'))
+            <div class="alert alert-warning alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <strong>{{{ Session::get('repayment') }}}</strong> 
+          </div>      
+       @endif    
 <div class="col-lg-4">
 <table class="table table-hover">
   <tr>

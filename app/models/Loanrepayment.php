@@ -69,47 +69,6 @@ class Loanrepayment extends \Eloquent {
 			//pay principal with the remaining amount
 			Loanrepayment::payPrincipal($loanaccount, $date, $payamount,$transaction);
 		}
-		/*
-		do {
-
-			if($payamount >= $principal_due ){
-
-				Loanrepayment::payPrincipal($loanaccount, $date, $principal_due);
-				$payamount = $payamount - $principal_due;
-
-
-				if($payamount >= $interest_due ){
-
-				Loanrepayment::payInterest($loanaccount, $date, $interest_due);
-				$payamount = $payamount - $interest_due;
-
-				} 
-
-				elseif($payamount > 0 && $payamount < $interest_due) {
-
-					Loanrepayment::payInterest($loanaccount, $date, $payamount);
-					$payamount = $payamount - $payamount;
-				}
-
-			}
-
-			elseif(($payamount > 0) and ($payamount < $principal_due) ) {
-
-				Loanrepayment::payInterest($loanaccount, $date, $interest_due);
-				$payamount = $payamount - $interest_due;
-
-
-				if($payamount > 0) {
-
-					Loanrepayment::payPrincipal($loanaccount, $date, $payamount);
-					$payamount = $payamount - $payamount;
-
-				}
-			}
-		} while($payamount > 0);
-
-	*/
-		//Loantransaction::repayLoan($loanaccount, $amount, $date);
 	}
 
 	public static function offsetLoan($data){

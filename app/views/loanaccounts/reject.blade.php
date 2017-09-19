@@ -1,8 +1,5 @@
-@if(Confide::user()->user_type == 'credit')  
-@extends('layouts.credit')
-@else
-@extends('layouts.accounting')
-@endif
+
+@extends('layouts.loans')
 @section('content')
 <br/>
 <div class="row">

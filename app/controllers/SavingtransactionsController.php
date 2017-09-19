@@ -19,8 +19,7 @@ class SavingtransactionsController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function create($id)
-	{
+	public function create($id){
 
 		$savingaccount = Savingaccount::findOrFail($id);
 
@@ -39,36 +38,41 @@ class SavingtransactionsController extends \BaseController {
 	    }
 
 	}
-
 	/**
 	 * Store a newly created savingtransaction in storage.
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{
-		$validator = Validator::make($data = Input::all(), Savingtransaction::$rules);
-
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
-
-		$date = Input::get('date');
-		$transAmount = Input::get('amount');
-
-		$savingaccount = Savingaccount::findOrFail(Input::get('account_id'));
-		$date = Input::get('date');
-		$amount = Input::get('amount');
-		$type = Input::get('type');
-		$description = Input::get('description');
-		$transacted_by = Input::get('transacted_by');
-
-
-		Savingtransaction::transact($date, $savingaccount, $amount, $type, $description, $transacted_by);
-
-		
-		return Redirect::to('savingtransactions/show/'.$savingaccount->id);
+	public function store(){
+        /*Take user provided receipt number*/
+        $rece = Input::get('receipt');
+        /*Check whether receipt number exists*/
+        $check=Receipt::where('receipt_no','=',$rece)->where('type','=','savings')
+        ->count();
+        /*Route depending whether the receipt number exists*/
+        if($check<=0){
+             $validator = Validator::make($data = Input::all(), Savingtransaction::$rules);
+                if ($validator->fails()){
+                    return Redirect::back()->withErrors($validator)->withInput();
+                }
+                $date = Input::get('date');
+                $transAmount = Input::get('amount');
+                $savingaccount = Savingaccount::findOrFail(Input::get('account_id'));
+                $date = Input::get('date');
+                $amount = Input::get('amount');
+                $receipt = Input::get('receipt');
+                $type = Input::get('type');
+                $description = Input::get('description');
+                $transacted_by = Input::get('transacted_by');
+                /*Use Savingtransaction model method to record the transaction*/
+                Savingtransaction::transact($date, $savingaccount, $amount, $type, $description, $transacted_by,$receipt);
+                /*Redirect to show member saving transactions*/
+                return Redirect::to('savingtransactions/show/'.$savingaccount->id);
+        }else if($check>0){
+                /*Redirect to current page if the receipt number exists*/
+                return Redirect::back()->withExisted('The receipt number is already available. Please provide another receipt number.')->withInput();
+        }
+        
 	}
 
 	/**
@@ -155,13 +159,9 @@ class SavingtransactionsController extends \BaseController {
 	public function statement($id){
 
 		$account = Savingaccount::findOrFail($id);
-
 		$transactions = $account->transactions;
-
-
 		$credit = DB::table('savingtransactions')->where('savingaccount_id', '=', $account->id)->where('type', '=', 'credit')->sum('amount');
 		$debit = DB::table('savingtransactions')->where('savingaccount_id', '=', $account->id)->where('type', '=', 'debit')->sum('amount');
-
 		$balance = $credit - $debit;
 
 		$organization = Organization::findOrFail(1);
@@ -189,10 +189,6 @@ class SavingtransactionsController extends \BaseController {
 			$file = Input::file('saving')->move($destination, $photo);
 
 			//$file = public_path().'/uploads/savings/'.$filename;
-
-
-			
-			
 			
 			$row = 1;
 

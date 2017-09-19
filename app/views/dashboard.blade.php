@@ -1,14 +1,12 @@
 @extends('layouts.main')
 @section('content')
 <style>
-
   .main_dashboard{
       background-image: url({{ URL::asset('site/img/slides/bg/001.jpg') }});
       height: 70%;
       text-align: center;
       background-position: center center;
   }
-
   .main_dashboard img{
       /*width: 50%;*/
       position: relative;
@@ -16,9 +14,20 @@
       transform: translateY(-50%);
       color: #E7E7E7;
   }
-
+    @media screen and (min-width: 768px) {
+        .modal-dialog {
+          width: 320px; /* New width for default modal */
+        }
+        .modal-sm {
+          width: 320px; /* New width for small modal */
+        }
+    }
+    @media screen and (min-width: 992px) {
+        .modal-lg {
+          width: 320px; /* New width for large modal */
+        }
+    }
 </style>
-
 <div class="row">
     <div class="col-lg-12" style="margin-top: -12%;">
 	<div class="main_dashboard">
@@ -52,6 +61,7 @@
         <th></th>
         <th></th>
         <th></th>
+        <th></th>
       </thead>
       <tbody>
         <?php $i = 1; ?>
@@ -64,17 +74,30 @@
           <td>{{ $member->phone }}</td>
           <td>{{ $member->id_number }}</td>
           <td>
-             <a href="{{ URL::to('member/savingaccounts/'.$member->id) }}" class="btn btn-info btn-sm">{{{ Lang::get('messages.savings') }}}</a>
+             <a href="{{ URL::to('member/savingaccounts/'.$member->id) }}" class="btn btn-info btn-sm">
+                 {{{ Lang::get('messages.savings') }}}
+             </a>
+           </td>
+            <td>
+             <button class="btn btn-info btn-sm " data-toggle="modal" data-target="#formSale">
+                 Form Sale
+             </button> 
            </td>
            <td>
-              <a href="{{  URL::to('members/loanaccounts/'.$member->id) }}" class="btn btn-info btn-sm">{{{ Lang::get('messages.loans') }}}</a>
-            </td>
-      <td>
-             <a href="{{ URL::to('sharetransactions/show/'.$member->shareaccount->id) }}" class="btn-sm-info btn-info btn-sm">{{{ Lang::get('messages.shares') }}}</a>
+              <a href="{{  URL::to('members/loanaccounts/'.$member->id) }}" class="btn btn-info btn-sm">
+                  {{{ Lang::get('messages.loans') }}}
+              </a>
             </td>
             <td>
-             <a href="{{ URL::to('members/show/'.$member->id) }}" class="btn btn-info btn-sm">{{{ Lang::get('messages.manage') }}}</a>
-      </td>
+             <a href="{{ URL::to('sharetransactions/show/'.$member->shareaccount->id) }}" class="btn btn-info btn-sm">
+                 {{{ Lang::get('messages.shares') }}}
+            </a>
+            </td>
+            <td>
+             <a href="{{ URL::to('members/show/'.$member->id) }}" class="btn btn-info btn-sm">
+                 {{{ Lang::get('messages.manage') }}}
+            </a>
+            </td>
         </tr>
         <?php $i++; ?>
         @endforeach
@@ -85,5 +108,47 @@
 	</div>
     </div>
 </div>
-
+<!-- Form Sale Modal -->
+<div class="modal fade" id="formSale" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Member Form Sale</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{{{URL::to('member/formsale')}}}">   
+            <fieldset>
+                <input type="hidden" name="member" value="{{$member->id}}"/>
+                <div class="form-group">
+                    <label>Amount </label>
+                    <input class="form-control" placeholder="" type="text" name="amount" id="amount" required>
+                </div>
+                <div class="form-group">
+                    <label>Income Account </label>
+                    <select class="form-control" name="account" required>
+                        <option value="">--Choose an Account--</option>
+                        @foreach($accounts as $account)
+                            <option value="{{$account->id}}">
+                                {{$account->name}}
+                            </option>
+                        @endforeach
+                    </select>
+                </div> 
+              </div>
+              <div class="modal-footer">        
+                <div class="form-actions form-group">
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                      Submit Payment
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 @stop

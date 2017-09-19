@@ -1,4 +1,4 @@
-@extends('layouts.accounting')
+@extends('layouts.loans')
 @section('content')
 <br/>
 @if(!empty($charge))

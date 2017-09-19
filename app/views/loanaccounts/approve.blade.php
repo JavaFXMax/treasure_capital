@@ -1,6 +1,14 @@
-@extends('layouts.accounting')
+@extends('layouts.loans')
 @section('content')
 <br/>
+@if(Session::has('existed'))
+    <div class="alert alert-danger alert-dismissible fade in col-lg-8" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>{{{ Session::get('existed') }}}</strong> 
+    </div>      
+@endif 
 @if(!empty($charge))
   <div class="alert alert-danger alert-dismissible fade in" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -65,7 +73,11 @@
       <input class="form-control" placeholder="" type="hidden" name="loanaccount_id" id="loanaccount_id" value="{{ $loanaccount->id }}">
          
         <input class="form-control" placeholder="" type="hidden" name="loanproduct_id" id="loanproduct_id" value="{{ $loanaccount->loanproduct->id }}">
-
+        <div class="form-group">
+            <label for="username">Loan # </label>
+            <input class="form-control" type="text" name="loan_no" id="loan_no"
+                   value="{{{ Input::old('loan_no') }}}" required>
+        </div>
         <div class="form-group">
             <label for="username">Approval Date </label>
             <div class="right-inner-addon ">

@@ -44,6 +44,7 @@ Route::get('/dashboard', function()
         if(Confide::user()->user_type == 'admin'){
             
             $members = Member::all();
+            $accounts =Account::where('category','=','INCOME')->get();
             //Grab all available loans
             $loanaccounts=Loanaccount::all();
             foreach ($loanaccounts as $loanaccount) {
@@ -91,7 +92,7 @@ Route::get('/dashboard', function()
                 break;                           
               }                 
             }
-            return View::make('dashboard', compact('members'));
+            return View::make('dashboard', compact('members','accounts'));
 
         } 
 
@@ -711,6 +712,8 @@ Route::get('loantransactions/receipt/{id}', 'LoantransactionsController@receipt'
 Route::get('loanapplication/member', 'LoanaccountsController@member');
 Route::get('loanapplication/form/{id}', 'LoanaccountsController@application');
 Route::post('loanapplication/form', 'LoanaccountsController@application22');
+Route::get('loanapplication/formsales', 'LoanaccountsController@formSales');
+Route::post('loanapplication/formsales', 'LoanaccountsController@doFormSales');
 
 Route::get('loans/application/{id}', 'LoanaccountsController@apply2');
 Route::post('shopapplication', 'LoanaccountsController@shopapplication');
@@ -882,6 +885,7 @@ Route::get('saccoinvestments/delete/{id}','InvestmentController@destroy');
 Route::get('portal/activate/{id}', 'MembersController@activateportal');
 Route::get('portal/deactivate/{id}', 'MembersController@deactivateportal');
 Route::get('css/reset/{id}', 'MembersController@reset');
+Route::post('member/formsale','MembersController@formSale');
 
 
 /*
@@ -1198,7 +1202,6 @@ Route::get('api/orders', function(){
                  ->where('member_id',$id)
                  ->select('project_orders.id as id','projects.name as name')
                  ->lists('name','id');
-    
     return $projects;
 });
 
@@ -1490,14 +1493,7 @@ Route::post('import/banks', function(){
   });
       
     }
-
-
   return Redirect::route('banks.index')->with('notice', 'banks have been succefully imported');
-
-
-
-  
-
 });
 
 
@@ -1508,8 +1504,38 @@ Route::get('api/loans', function(){
                  ->where('member_id',$id)
                  ->select('loanaccounts.id as id','loanproducts.name as name')
                  ->lists('name','id');
-    
     return $loans;
+});
+
+Route::get('api/guarantor/shares', function(){
+    $id = Input::get('option');
+    $credit=DB::table('savingtransactions')
+            ->join('savingaccounts','savingtransactions.savingaccount_id','=','savingaccounts.id')
+            ->where('savingaccounts.member_id',$id)
+            ->where('savingtransactions.type','=','credit')
+            ->sum('savingtransactions.amount');
+    $debit=DB::table('savingtransactions')
+            ->join('savingaccounts','savingtransactions.savingaccount_id','=','savingaccounts.id')
+            ->where('savingaccounts.member_id',$id)
+            ->where('savingtransactions.type','=','debit')
+            ->sum('savingtransactions.amount');
+    $balance=$credit-$debit;
+    return $balance;
+});
+
+Route::get('api/guarantor/loans', function(){
+    $id = Input::get('option');
+    $sum=0;
+    $loanaccounts=DB::table('loanaccounts')->where('id',$id)->get();
+    foreach($loanaccounts as $loan){
+        $credit=DB::table('loantransactions')->where('loanaccount_id',$id)
+            ->where('type','=','credit')->sum('amount');
+        $debit=DB::table('loantransactions')->where('loanaccount_id',$id)
+            ->where('type','=','debit')->sum('amount');
+        $balance=$debit-$credit;
+        $sum+=$balance;
+    }
+    return $sum;
 });
 
 

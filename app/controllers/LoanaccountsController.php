@@ -48,7 +48,7 @@ class LoanaccountsController extends \BaseController {
 	public function apply($id)
 	{
 		$member = Member::find($id);
-		$guarantors = Member::where('id','!=',$id)->where('group_id','=',$member->group_id)
+		$guarantors = Member::where('group_id','=',$member->group_id)
             ->get();
 		$loanproducts = Loanproduct::all();
 		$disbursed=Disbursementoption::all();
@@ -60,7 +60,6 @@ class LoanaccountsController extends \BaseController {
 
 
 	public function apply2($id){
-
 		$member = Member::find($id);
         $guarantors = Member::where('id','!=',$id)
             ->where('group_id','=',$member->group_id)
@@ -249,114 +248,139 @@ public function shopapplication(){
 	 * @return Response
 	 */
 	public function doapprove($id){
-		$logged=Confide::User()->username;
-		$membertype=Member::where('membership_no','=',$logged)->pluck('member_type');
-		//$loanaccount =  new Loanaccount;
-		$validator = Validator::make($data = Input::all(), Loanaccount::$rules);
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
-		//$loanaccount->approve($data);
-		$loanaccount_id = array_get($data, 'loanaccount_id');
+        /*Take user provided receipt number*/
+        $rece = Input::get('loan_no');
+        /*Check whether receipt number exists*/
+        $check=Receipt::where('receipt_no','=',$rece)->where('type','=','loans')
+        ->count();
+        /*Route depending whether the receipt number exists*/
+        if($check<=0){
+            $logged=Confide::User()->username;
+            $membertype=Member::where('membership_no','=',$logged)->pluck('member_type');
+            //$loanaccount =  new Loanaccount;
+            $validator = Validator::make($data = Input::all(), Loanaccount::$rules);
+            if ($validator->fails())
+            {
+                return Redirect::back()->withErrors($validator)->withInput();
+            }
+            //$loanaccount->approve($data);
+            $loanaccount_id = array_get($data, 'loanaccount_id');
+            $loanguarantors=DB::table('loanguarantors')
+                            ->join('members','loanguarantors.member_id','=','members.id')
+                            ->join('loanaccounts','loanguarantors.loanaccount_id','=','loanaccounts.id')
+                            ->where('loanguarantors.loanaccount_id','=',$loanaccount_id)
+                            ->select('members.name as mname','members.id as mid','loanguarantors.amount as mamount','loanguarantors.has_approved as approved')
+                            ->get();	
+            if(empty($loanguarantors)){
+                /**
+                    if($membertype=='chairman'){
+                        $loanaccount = Loanaccount::findorfail($loanaccount_id);
+                        //Check if the secretary has approved first n order for the chairman to approve
+                        $approvalstt=$loanaccount->secretary_approved;
+                        switch($approvalstt){
+                            case 0:
+                                return Redirect::back()->withClinch("SECRETARY APPROVAL: The secretary has not yet approved the loan application.");
+                            break;
 
-		$loanguarantors=DB::table('loanguarantors')
-						->join('members','loanguarantors.member_id','=','members.id')
-						->join('loanaccounts','loanguarantors.loanaccount_id','=','loanaccounts.id')
-						->where('loanguarantors.loanaccount_id','=',$loanaccount_id)
-						->select('members.name as mname','members.id as mid','loanguarantors.amount as mamount','loanguarantors.has_approved as approved')
-						->get();	
-		
-		if(empty($loanguarantors)){
-            /**
-				if($membertype=='chairman'){
-					$loanaccount = Loanaccount::findorfail($loanaccount_id);
-					//Check if the secretary has approved first n order for the chairman to approve
-					$approvalstt=$loanaccount->secretary_approved;
-					switch($approvalstt){
-						case 0:
-							return Redirect::back()->withClinch("SECRETARY APPROVAL: The secretary has not yet approved the loan application.");
-						break;
-						
-						case 1:
-							$loanaccount->date_approved = array_get($data, 'date_approved');
-							$loanaccount->amount_approved = array_get($data, 'amount_approved');
-							$loanaccount->interest_rate = array_get($data, 'interest_rate');
-							$loanaccount->period = array_get($data, 'period');
-							$loanaccount->chairman_approved = TRUE;
-							$loanaccount->is_approved = TRUE;
-							$loanaccount->is_new_application = FALSE;
-							$loanaccount->update();
-							return Redirect::route('loans.index');
-						break;
-					}					
-					
-				}else if($membertype=='secretary'){
-                **/
-                    $chargeamount=Loanproduct::chargeOnApplication($id);
-					$loanaccount = Loanaccount::findorfail($loanaccount_id);
-					$loanaccount->date_approved = array_get($data, 'date_approved');
-					$loanaccount->amount_approved = array_get($data, 'amount_approved')+$chargeamount;		
-					$loanaccount->interest_rate = array_get($data, 'interest_rate');
-					$loanaccount->period = array_get($data, 'period');
-                    $loanaccount->chairman_approved = TRUE;
-				    $loanaccount->is_approved = TRUE;
-					$loanaccount->secretary_approved = TRUE;
-					$loanaccount->is_new_application = FALSE;
-					$loanaccount->update();
+                            case 1:
+                                $loanaccount->date_approved = array_get($data, 'date_approved');
+                                $loanaccount->amount_approved = array_get($data, 'amount_approved');
+                                $loanaccount->interest_rate = array_get($data, 'interest_rate');
+                                $loanaccount->period = array_get($data, 'period');
+                                $loanaccount->chairman_approved = TRUE;
+                                $loanaccount->is_approved = TRUE;
+                                $loanaccount->is_new_application = FALSE;
+                                $loanaccount->update();
+                                return Redirect::route('loans.index');
+                            break;
+                        }					
 
-					return Redirect::route('loans.index');
-				/**}else{
-					return Redirect::back()->withQuest("UNAUTHORIZED USER: You are not authorized to approve the loan application");
-				}	**/			
-		}else{
-			foreach($loanguarantors as $lguara){
-				$check_if_agreed=$lguara->approved;
-				switch($check_if_agreed){
-					case 0:
-						return Redirect::back()->withStatus('The available guarantors have not agreed to act as guarantors for the loan.');
-					break;
-					case 1:
-                        /**
-						if($membertype=='chairman'){
-						$loanaccount = Loanaccount::findorfail($loanaccount_id);
-						//Check if the secretary has approved first n order for the chairman to approve
-						$approvalstt=$loanaccount->secretary_approved;
-							 if($approvalstt==0){
-							 	return Redirect::back()->withClinch("SECRETARY APPROVAL: The secretary has not yet approved the loan application.");
-							 }else if($approvalstt==1){
-							 		$loanaccount->date_approved = array_get($data, 'date_approved');
-									$loanaccount->amount_approved = array_get($data, 'amount_approved');	
-									$loanaccount->interest_rate = array_get($data, 'interest_rate');
-									$loanaccount->period = array_get($data, 'period');
-									$loanaccount->chairman_approved = TRUE;
-									$loanaccount->is_approved = TRUE;
-									$loanaccount->is_new_application = FALSE;
-									$loanaccount->update();
-									return Redirect::route('loans.index');
-							 }							
-					
-						}else if($membertype=='secretary'){**/
-                            $chargeamount=Loanproduct::chargeOnApplication($id);
-							$loanaccount =Loanaccount::findorfail($loanaccount_id);
-                            $loanaccount->date_approved = array_get($data, 'date_approved');
-                            $loanaccount->amount_approved = array_get($data, 'amount_approved')+$chargeamount;		
-                            $loanaccount->interest_rate = array_get($data, 'interest_rate');
-                            $loanaccount->period = array_get($data, 'period');
-                            $loanaccount->chairman_approved = TRUE;
-                            $loanaccount->is_approved = TRUE;
-                            $loanaccount->secretary_approved = TRUE;
-                            $loanaccount->is_new_application = FALSE;
-                            $loanaccount->update();
+                    }else if($membertype=='secretary'){
+                    **/
+                        $chargeamount=Loanproduct::chargeOnApplication($id);
+                        $loanaccount = Loanaccount::findorfail($loanaccount_id);
+                        $loanaccount->date_approved = array_get($data, 'date_approved');
+                        $loanaccount->amount_approved = array_get($data, 'amount_approved')+$chargeamount;		
+                        $loanaccount->interest_rate = array_get($data, 'interest_rate');
+                        $loanaccount->period = array_get($data, 'period');
+                        $loanaccount->chairman_approved = TRUE;
+                        $loanaccount->is_approved = TRUE;
+                        $loanaccount->secretary_approved = TRUE;
+                        $loanaccount->is_new_application = FALSE;
+                        $loanaccount->update();
 
-                            return Redirect::route('loans.index');
-						/**}else{
-							return Redirect::back()->withQuest("UNAUTHORIZED USER: You are not authorized to approve the loan application");
-					 }	**/
-					break;
-				}
-			}
-		}		
+                        /*Create a receipt*/
+                        $rec= new Receipt;
+                        $rec->type='loans';
+                        $rec->receipt_no=$rece;
+                        $rec->trans_no=$loanaccount_id;
+                        $rec->amount=array_get($data, 'amount_approved')+$chargeamount;
+                        $rec->save();
+                
+                        return Redirect::route('loans.index');
+                    /**}else{
+                        return Redirect::back()->withQuest("UNAUTHORIZED USER: You are not authorized to approve the loan application");
+                    }	**/			
+            }else{
+                foreach($loanguarantors as $lguara){
+                    $check_if_agreed=$lguara->approved;
+                    switch($check_if_agreed){
+                        case 0:
+                            return Redirect::back()->withStatus('The available guarantors have not agreed to act as guarantors for the loan.');
+                        break;
+                        case 1:
+                            /**
+                            if($membertype=='chairman'){
+                            $loanaccount = Loanaccount::findorfail($loanaccount_id);
+                            //Check if the secretary has approved first n order for the chairman to approve
+                            $approvalstt=$loanaccount->secretary_approved;
+                                 if($approvalstt==0){
+                                    return Redirect::back()->withClinch("SECRETARY APPROVAL: The secretary has not yet approved the loan application.");
+                                 }else if($approvalstt==1){
+                                        $loanaccount->date_approved = array_get($data, 'date_approved');
+                                        $loanaccount->amount_approved = array_get($data, 'amount_approved');	
+                                        $loanaccount->interest_rate = array_get($data, 'interest_rate');
+                                        $loanaccount->period = array_get($data, 'period');
+                                        $loanaccount->chairman_approved = TRUE;
+                                        $loanaccount->is_approved = TRUE;
+                                        $loanaccount->is_new_application = FALSE;
+                                        $loanaccount->update();
+                                        return Redirect::route('loans.index');
+                                 }							
+
+                            }else if($membertype=='secretary'){**/
+                                $chargeamount=Loanproduct::chargeOnApplication($id);
+                                $loanaccount =Loanaccount::findorfail($loanaccount_id);
+                                $loanaccount->date_approved = array_get($data, 'date_approved');
+                                $loanaccount->amount_approved = array_get($data, 'amount_approved')+$chargeamount;		
+                                $loanaccount->interest_rate = array_get($data, 'interest_rate');
+                                $loanaccount->period = array_get($data, 'period');
+                                $loanaccount->chairman_approved = TRUE;
+                                $loanaccount->is_approved = TRUE;
+                                $loanaccount->secretary_approved = TRUE;
+                                $loanaccount->is_new_application = FALSE;
+                                $loanaccount->update();
+                                
+                                /*Create a receipt*/
+                                $rec= new Receipt;
+                                $rec->type='loans';
+                                $rec->receipt_no=$rece;
+                                $rec->trans_no=$loanaccount_id;
+                                $rec->amount=array_get($data, 'amount_approved')+$chargeamount;
+                                $rec->save();
+                            
+                                return Redirect::route('loans.index');
+                            /**}else{
+                                return Redirect::back()->withQuest("UNAUTHORIZED USER: You are not authorized to approve the loan application");
+                         }	**/
+                        break;
+                    }
+                }
+            }
+        }else if($check>0){
+            /*Redirect to current page if the receipt number exists*/
+            return Redirect::back()->withExisted('The receipt number is already available. Please provide another receipt number.')->withInput();
+        }
 	}
 
 	public function guarantorapprove($id){
@@ -739,7 +763,8 @@ public function shopapplication(){
 		$secretary=Member::where('member_type','=','secretary')->get()->first();
 
 		if($transaction->loanproduct->application_form == 'Quick Advance Application Form'){
-			$pdf = PDF::loadView('pdf.loanreports.advanceapplicationform', compact('transaction','balance_to_date','amount_to_date','kin','guarantors', 'organization','securities','purposes','chairman','secretary'))->setPaper('a4')->setOrientation('potrait');
+			$pdf = PDF::loadView('pdf.loanreports.advanceapplicationform', compact('transaction','balance_to_date','amount_to_date','kin','guarantors', 'organization','securities','purposes','chairman','secretary'))->setPaper('a4')
+                ->setOrientation('potrait');
 			return $pdf->stream('Quick Advance Application Form.pdf');		
 		}else{
 	        $pdf = PDF::loadView('pdf.loanreports.loanapplicationform', compact('transaction','balance_to_date','amount_to_date','kin','guarantors', 'organization','securities','purposes','chairman','secretary'))->setPaper('a4')->setOrientation('potrait');	 	
@@ -747,5 +772,25 @@ public function shopapplication(){
         }
 
 	}
+    
+    public function formSales(){
+        return View::make('pdf.loanreports.form_sale');
+    }
+    
+    public function doFormSales(){
+        $fromDate = Input::get('fromDate');
+        $toDate = Input::get('toDate');
+        $counter=Formsale::whereBetween('date', [$fromDate, $toDate])->count();
+        $sales=Formsale::whereBetween('date', [$fromDate, $toDate])->get();
+        if($counter>0){
+            $organization = Organization::findOrFail(1);
+            $pdf = PDF::loadView('pdf.loanreports.formsales', compact( 'organization','sales'))->setPaper('a4')
+                ->setOrientation('potrait');	 	
+            return $pdf->stream('Summarised Form Sales.pdf');
+        }else if($counter<=0){
+            return Redirect::back()->withMissed("There are no form sales that occurred between the selected dates. Please select another date range and try again.");
+        }
+        
+    }
 
 }

@@ -22,7 +22,15 @@ function asMoney($value) {
     }
 </style>
 <div class="row">
-    @if (Session::has('ack'))
+       @if(Session::has('existed'))
+            <div class="alert alert-danger alert-dismissible fade in col-lg-8" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>{{{ Session::get('existed') }}}</strong> 
+            </div>      
+       @endif  
+       @if(Session::has('ack'))
             <div class="alert alert-success alert-dismissible fade in col-lg-6 col-lg-offset-3" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -68,6 +76,11 @@ function asMoney($value) {
         @endif
 <form method="POST" action="{{{ URL::to('savingtransactions') }}}" accept-charset="UTF-8">
     <fieldset>
+        <div class="form-group">
+            <label for="username">Receipt # </label>
+            <input class="form-control" type="text" name="receipt" id="receipt"
+                   value="{{{ Input::old('receipt') }}}" required>
+        </div>
         <div class="form-group">
             <label for="username">Transaction </label>
            <select name="type" class="form-control" required>

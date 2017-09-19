@@ -153,7 +153,7 @@ class Loantransaction extends \Eloquent {
 			);
 		$journal = new Journal;
 		$journal->journal_entry($data);
-		Audit::logAudit($date, Confide::user()->username, 'loan to up', 'Loans', $amount);
+		Audit::logAudit($date, Confide::user()->username, 'loan top up', 'Loans', $amount);
 	}
 
 }

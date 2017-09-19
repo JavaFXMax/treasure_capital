@@ -615,12 +615,97 @@ else{
 	}
      
     public function deletedoc(){
-		
 		//$id = DB::table('members')->where('membership_no', '=', $mem)->pluck('id');\
-
         Document::destroy(Input::get('id'));
-
 		return 0;
-		
 	}
+    
+    public function formSale(){
+        $date=date('Y-m-d');
+        $amount=Input::get('amount');
+        $member_id=Input::get('member');
+        //$debit_account=Input::get('amount');
+        $credit_account=Input::get('account');
+        $data = array(
+			'credit_account' =>$credit_account, 
+            'debit_account'=>null,
+			'date' => $date,
+			'amount' => $amount,
+			'initiated_by' => 'system',
+			'description' => 'Payment for Loan Application Form',
+            'member'=>$member_id
+			);
+		if($data['member'] !=null){
+            $date = date('Y-m-d H:m:s');
+		    $trans_no  = strtotime($date);
+            // function for crediting
+            if($data['credit_account'] !=null){
+                $journal = new Journal;
+                $account = Account::findOrFail($data['credit_account']);
+                $journal->account()->associate($account);
+
+                $journal->date = $data['date'];
+                $journal->trans_no = $trans_no;
+                $journal->initiated_by = $data['initiated_by'];
+                $journal->amount = $data['amount'];
+                $journal->type = 'credit';
+                $journal->description = $data['description'];
+                $journal->save();
+            }
+            // function for debiting
+            if($data['debit_account'] !=null){
+                $journal = new Journal;
+                $account = Account::findOrFail($data['debit_account']);
+                $journal->account()->associate($account);
+
+                $journal->date = $data['date'];
+                $journal->trans_no = $trans_no;
+                $journal->initiated_by = $data['initiated_by'];
+                $journal->amount = $data['amount'];
+                $journal->type = 'debit';
+                $journal->description = $data['description'];
+                $journal->save();
+            }
+            /*Record the form sale*/
+            $formsale=new Formsale;
+            $formsale->member_id=$data['member'];
+            $formsale->date=date("Y-m-d");
+            $formsale->amount_paid=$data['amount'];
+            $formsale->trans_no=$trans_no;
+            $formsale->save();
+            
+        }else if($data['member'] ==null){
+            $date = date('Y-m-d H:m:s');
+		    $trans_no  = strtotime($date);
+            // function for crediting
+            if($data['credit_account'] !=null){
+                $journal = new Journal;
+                $account = Account::findOrFail($data['credit_account']);
+                $journal->account()->associate($account);
+                $journal->date = $data['date'];
+                $journal->trans_no = $trans_no;
+                $journal->initiated_by = $data['initiated_by'];
+                $journal->amount = $data['amount'];
+                $journal->type = 'credit';
+                $journal->description = $data['description'];
+                $journal->save();
+            }
+            // function for debiting
+            if($data['debit_account'] !=null){
+                $journal = new Journal;
+                $account = Account::findOrFail($data['debit_account']);
+                $journal->account()->associate($account);
+                $journal->date = $data['date'];
+                $journal->trans_no = $trans_no;
+                $journal->initiated_by = $data['initiated_by'];
+                $journal->amount = $data['amount'];
+                $journal->type = 'debit';
+                $journal->description = $data['description'];
+                $journal->save();
+            }
+        }
+		Audit::logAudit($date, Confide::user()->username, 'Payment for Loan Application Form', 'Loans', $amount);
+        
+        return Redirect::back();
+    }
 }

@@ -59,7 +59,6 @@ tr,#dcontainer input,#dcontainer textarea{height:30px;width:180px;border:1px sol
 
 <script type="text/javascript">
   $(document).ready(function(){
-  
     $('#bank_id').change(function(){
         $.get("{{ url('api/dropdown')}}", 
         { option: $(this).val() }, 
@@ -73,8 +72,6 @@ tr,#dcontainer input,#dcontainer textarea{height:30px;width:180px;border:1px sol
     });
 });
 </script>
-
-
 <br/>
 
 <div class="row">

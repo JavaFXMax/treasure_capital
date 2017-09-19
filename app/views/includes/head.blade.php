@@ -3,19 +3,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--
     <script src="https://use.fontawesome.com/4ed1989730.js"></script>
-    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script> 
+    -->
     <title>XARA CBS </title>
     <!-- Core CSS - Include with every page -->
-    <link rel="stylesheet"
-     href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
     {{ HTML::style('css/bootstrap.min.css') }}    
    {{ HTML::style('font-awesome-4.6.3/css/font-awesome.css') }}
     <!-- Page-Level Plugin CSS - Blank -->
     <!-- SB Admin CSS - Include with every page -->
     {{ HTML::style('css/sb-admin.css') }}
     <!-- datatables css -->
-
     {{ HTML::style('media/css/jquery.dataTables.min.css') }}
     {{ HTML::style('datepicker/css/bootstrap-datepicker.css') }}
     <!-- jquery scripts with datatable scripts -->
@@ -33,10 +32,8 @@
         $('#app').DataTable();
         $('#disbursed').DataTable();
         $('#amended').DataTable();
-
     	} );
   </script>
-
 <style type="text/css">
 
    .right-inner-addon {

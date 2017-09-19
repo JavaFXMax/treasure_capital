@@ -133,7 +133,7 @@ class Savingtransaction extends \Eloquent {
 
 	}
     
-	public static function transact($date, $savingaccount, $amount, $type, $description, $transacted_by){
+	public static function transact($date, $savingaccount, $amount, $type, $description, $transacted_by,$receipt){
 		$savingtransaction = new Savingtransaction;
 		$savingtransaction->date = $date;
 		$savingtransaction->savingaccount()->associate($savingaccount);
@@ -142,6 +142,13 @@ class Savingtransaction extends \Eloquent {
 		$savingtransaction->description = $description;
 		$savingtransaction->transacted_by = $transacted_by;
 		$savingtransaction->save();
+        /*Create a receipt*/
+        $rec= new Receipt;
+        $rec->type='savings';
+        $rec->receipt_no=$receipt;
+        $rec->trans_no=$savingtransaction->id;
+        $rec->amount=$amount;
+        $rec->save();
         /*Get posting accounts*/
         $savingproduct_id=Savingaccount::where('id','=',$savingaccount)
             ->pluck('savingproduct_id');

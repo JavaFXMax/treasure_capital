@@ -276,8 +276,8 @@ class LoanrepaymentsController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{
+	public function store(){
+        
 		$validator = Validator::make($data = Input::all(), Loanrepayment::$rules);
 
 		if ($validator->fails())
@@ -285,23 +285,49 @@ class LoanrepaymentsController extends \BaseController {
 			return Redirect::back()->withErrors($validator)->withInput();
 		}
 		$loanaccount = Input::get('loanaccount_id');
-		$loanamount=Loanaccount::where('id','=',$loanaccount)->pluck('amount_applied');
-		//dd($loanamount);
-		$repayamount= Input::get('amount');
-		$guarantors=DB::table('loanguarantors')->where('loanaccount_id','=',$loanaccount)->get();		
-		foreach($guarantors as $g){
-			$member=$g->member_id;
-			$amount=$g->amount;
-			$fraction=$amount/$loanamount;	
-			$reduceamount=$fraction * $repayamount;
-			$reduced=$amount- $reduceamount;								
-            Loanguarantor::where('member_id','=',$member)
-			  ->where('loanaccount_id','=',$loanaccount)
-			  ->update(['amount'=>$reduced]);	
-		}
-		//return $amount;
-		Loanrepayment::repayLoan($data);
-		return Redirect::to('loans/show/'.$loanaccount)->withFlashMessage('Loan successfully repaid!');;
+        /*Get Last repayment remitted*/
+        $lastpaid=Loanrepayment::where('loanaccount_id','=',$loanaccount)
+            ->where('type','=','credit')
+            ->orderBy('id','DESC')
+            ->first();
+        $year = date("Y", strtotime($lastpaid->date));
+        $mwaka= date("Y");
+        $month= date("m", strtotime($lastpaid->date));
+        $mwezi= date("m");
+        
+        if(($year==$mwaka)&&($month==$mwezi)){
+            //Create a transaction record
+            $transaction = new Loantransaction;
+            $transaction->loanaccount()->associate($loanaccount);
+            $transaction->date = Input::get('date');
+            $transaction->description = 'loan repayment';
+            $transaction->amount = Input::get('amount');
+            $transaction->type = 'credit';
+            $transaction->save();
+            Audit::logAudit(Input::get('date'), Confide::user()->username, 'loan repayment', 'Loans', Input::get('amount'));
+            /*Pay Principal with all the amount*/
+            Loanrepayment::payPrincipal($loanaccount, Input::get('date'), Input::get('amount'),$transaction);
+            //Redirect to loan page
+            return Redirect::to('loans/show/'.$loanaccount)->withFlashMessage('Loan successfully repaid!'); 
+        }else{
+            $loanamount=Loanaccount::where('id','=',$loanaccount)->pluck('amount_applied');
+            //dd($loanamount);
+            $repayamount= Input::get('amount');
+            $guarantors=DB::table('loanguarantors')->where('loanaccount_id','=',$loanaccount)->get();		
+            foreach($guarantors as $g){
+                $member=$g->member_id;
+                $amount=$g->amount;
+                $fraction=$amount/$loanamount;	
+                $reduceamount=$fraction * $repayamount;
+                $reduced=$amount- $reduceamount;								
+                Loanguarantor::where('member_id','=',$member)
+                  ->where('loanaccount_id','=',$loanaccount)
+                  ->update(['amount'=>$reduced]);	
+            }
+            //return $amount;
+            Loanrepayment::repayLoan($data);
+            return Redirect::to('loans/show/'.$loanaccount)->withFlashMessage('Loan successfully repaid!');   
+        }
 	}
 	public function offsetloan(){
 		$validator = Validator::make($data = Input::all(), Loanrepayment::$rules);

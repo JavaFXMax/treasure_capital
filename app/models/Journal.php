@@ -27,9 +27,8 @@ class Journal extends \Eloquent {
 		$trans_no = $this->getTransactionNumber();
 		// function for crediting
 		$this->creditAccount($data, $trans_no);
-		// function for crediting
+		// function for debiting
 		$this->debitAccount($data, $trans_no);
-		
 	}
 	public function getTransactionNumber(){
 		$date = date('Y-m-d H:m:s');
