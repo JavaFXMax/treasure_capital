@@ -79,9 +79,9 @@
              </a>
            </td>
             <td>
-             <button class="btn btn-info btn-sm " data-toggle="modal" data-target="#formSale">
+             <a href="{{ URL::to('loanapplication/form_sale/'.$member->id) }}" class="btn btn-info btn-sm">
                  Form Sale
-             </button> 
+             </a> 
            </td>
            <td>
               <a href="{{  URL::to('members/loanaccounts/'.$member->id) }}" class="btn btn-info btn-sm">

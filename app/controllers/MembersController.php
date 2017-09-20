@@ -706,6 +706,6 @@ else{
         }
 		Audit::logAudit($date, Confide::user()->username, 'Payment for Loan Application Form', 'Loans', $amount);
         
-        return Redirect::back();
+        return Redirect::to('/dashboard');
     }
 }

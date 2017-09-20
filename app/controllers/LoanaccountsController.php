@@ -773,6 +773,12 @@ public function shopapplication(){
 
 	}
     
+    public function form_sale($id){
+        $member= Member::where('id','=',$id)->first();
+        $accounts =Account::where('category','=','INCOME')->get();
+        return View::make('loanaccounts.form_sale',compact('member','accounts'));
+    }
+    
     public function formSales(){
         return View::make('pdf.loanreports.form_sale');
     }

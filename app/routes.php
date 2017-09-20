@@ -712,6 +712,7 @@ Route::get('loantransactions/receipt/{id}', 'LoantransactionsController@receipt'
 Route::get('loanapplication/member', 'LoanaccountsController@member');
 Route::get('loanapplication/form/{id}', 'LoanaccountsController@application');
 Route::post('loanapplication/form', 'LoanaccountsController@application22');
+Route::get('loanapplication/form_sale/{id}','LoanaccountsController@form_sale');
 Route::get('loanapplication/formsales', 'LoanaccountsController@formSales');
 Route::post('loanapplication/formsales', 'LoanaccountsController@doFormSales');
 
