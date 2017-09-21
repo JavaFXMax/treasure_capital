@@ -110,7 +110,7 @@ body {
         <td>{{$member->membership_no}}</td>
         <td> {{ $member->name}}</td>
         <?php
-          $contributions=Sharetransaction::where('shareaccount_id','=',$member->id)
+          $contributions=Savingtransaction::where('savingaccount_id','=',$member->id)
           ->where('type','=', 'credit')->sum('amount');
         ?>
         <td>{{asMoney($contributions)}}</td>

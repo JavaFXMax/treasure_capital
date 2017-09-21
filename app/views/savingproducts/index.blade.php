@@ -35,7 +35,7 @@
 	<div class="col-lg-12">
     <div class="panel panel-default">
       <div class="panel-heading">
-          <a class="btn btn-info btn-sm" href="{{ URL::to('savingproducts/create')}}">new Saving product</a>
+          <a class="btn btn-info btn-sm" href="{{ URL::to('savingproducts/create')}}">New Share product</a>
         </div>
         <div class="panel-body">
     <table id="users" class="table table-condensed table-bordered table-responsive table-hover">
@@ -63,7 +63,8 @@
                   </button>          
                   <ul class="dropdown-menu" role="menu">
                     <li><a href="{{URL::to('savingproducts/show/'.$product->id)}}">View</a></li>
-                    <li><a href="{{URL::to('savingproducts/update/'.$product->id)}}">Update</a></li>  <li><a href="{{URL::to('savingproducts/delete/'.$product->id)}}">Delete</a></li>
+                    <li><a href="{{URL::to('savingproducts/update/'.$product->id)}}">Update</a></li>
+                    <li><a href="{{URL::to('savingproducts/delete/'.$product->id)}}">Delete</a></li>
                   </ul>
               </div>
            </td>
@@ -75,28 +76,4 @@
   </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @stop

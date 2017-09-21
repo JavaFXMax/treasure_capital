@@ -44,7 +44,7 @@
 
         <div class="form-group">
             <label for="username">Currency</label>
-            <select class="form-control" name="currency" required>
+            <select class="form-control selectable" name="currency" required>
 
                 @foreach($currencies as $currency)
                 <option value="{{ $currency->shortname }}"> {{ $currency->name }}</option>
@@ -69,7 +69,7 @@
 
          <div class="form-group">
             <label for="username">Interest Formula</label>
-            <select class="form-control" name="formula" required>
+            <select class="form-control selectable" name="formula" required>
 
                 <option value="SL"> Straight Line (SL)</option>
                 <option value="RB"> Reducing Balance (RB)</option>
@@ -82,7 +82,7 @@
 
          <div class="form-group">
             <label for="username">Amortization Method</label>
-            <select class="form-control" name="amortization" required>
+            <select class="form-control selectable" name="amortization" required>
 
                 <option value="EI"> Equal Instalments</option>
                 <option value="EP"> Equal Principals</option>
@@ -112,7 +112,7 @@
     
             <div class="form-group ">
             <label for="username">Cash Account</label>
-            <select class="form-control" name="cash_account" required>
+            <select class="form-control selectable" name="cash_account" required>
 
                 <option></option>
                 @foreach($accounts as $account)
@@ -132,7 +132,7 @@
 
                 <div class="form-group ">
             <label for="username">Portfolio Account</label>
-            <select class="form-control" name="portfolio_account" required>
+            <select class="form-control selectable" name="portfolio_account" required>
 
                 <option></option>
                 @foreach($accounts as $account)
@@ -152,7 +152,7 @@
             <div class="col-lg-4">
             <div class="form-group ">
             <label for="username">Interest Account</label>
-            <select class="form-control" name="loan_interest" required>
+            <select class="form-control selectable" name="loan_interest" required>
                 <option></option>
                 @foreach($accounts as $account)
                 @if($account->category == 'INCOME')
@@ -165,7 +165,7 @@
             <div class="col-lg-4">
                 <div class="form-group ">
             <label for="username">Fees Account</label>
-            <select class="form-control" name="loan_fees" required>
+            <select class="form-control selectable" name="loan_fees" required>
                 <option></option>
                 @foreach($accounts as $account)
                 @if($account->category == 'INCOME')
@@ -185,7 +185,7 @@
 
                 <div class="form-group ">
             <label for="username">Penalties Account</label>
-            <select class="form-control" name="loan_penalty" required>
+            <select class="form-control selectable" name="loan_penalty" required>
 
                 <option></option>
                 @foreach($accounts as $account)
@@ -209,7 +209,7 @@
     
             <div class="form-group ">
             <label for="username">Losses Written Off</label>
-            <select class="form-control" name="loan_write_off" required>
+            <select class="form-control selectable" name="loan_write_off" required>
 
                 <option></option>
                 @foreach($accounts as $account)
@@ -243,7 +243,7 @@
     
             <div class="form-group ">
             <label for="username">Loan Over payments</label>
-            <select class="form-control" name="loan_overpayment" required>
+            <select class="form-control selectable" name="loan_overpayment" required>
 
                 <option></option>
                 @foreach($accounts as $account)
@@ -261,7 +261,7 @@
 
             <div class="form-group" >
             <label for="username">Application Form</label>
-            <select class="form-control" name="appform" >
+            <select class="form-control selectable" name="appform" >
                 <option value=""> </option>
                 <option value="Loan Application Form"> Loan Application Form</option>
                 <option value="Quick Advance Application Form"> Quick Advance Application Form</option>

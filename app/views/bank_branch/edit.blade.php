@@ -40,7 +40,7 @@
 
         <div class="form-group">
                         <label for="username">Banks <span style="color:red">*</span></label>
-                        <select name="bank" id="bank" class="form-control">
+                        <select name="bank" id="bank" class="form-control selectable">
                             <option></option>
                             @foreach($banks as $bank)
                             <option value="{{ $bank->id }}"<?= ($bbranch->bank_id==$bank->id)?'selected="selected"':''; ?>> {{ $bank->bank_name }}</option>

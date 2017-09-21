@@ -18,7 +18,7 @@
             </div>
             <div class="form-group">
                 <label>Income Account </label>
-                <select class="form-control" name="account" required>
+                <select class="form-control selectable" name="account" required>
                     <option value="">--Choose an Account--</option>
                     @foreach($accounts as $account)
                         <option value="{{$account->id}}">

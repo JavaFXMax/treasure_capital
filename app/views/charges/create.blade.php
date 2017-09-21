@@ -23,7 +23,7 @@
     <fieldset>
         <div class="form-group">
             <label for="username">Category</label>
-          <select class="form-control" name="category" id="category">
+          <select class="form-control selectable" name="category" id="category">
             <option></option>
             <option value="loan">Loan</option>
             <option value="saving">Saving</option>
@@ -37,7 +37,7 @@
         </div>
          <div class="form-group">
             <label for="username">Calculation Method</label>
-          <select class="form-control" name="calculation_method" id="calculation_method">
+          <select class="form-control selectable" name="calculation_method" id="calculation_method">
             <option></option>
             <option value="flat">Flat</option>
             <option value="percent">Percentage</option>
@@ -48,7 +48,7 @@
         </div>
          <div class="form-group">
             <label for="username">Payment Time</label>
-          <select class="form-control" name="payment_method" id="payment_method">
+          <select class="form-control selectable" name="payment_method" id="payment_method">
             <option></option>
             <option value="withdrawal">Withdrawal</option>
             <option value="transfer">Transfer</option>
@@ -60,7 +60,7 @@
         </div>
          <div class="form-group">
             <label for="username">Charge On</label>
-              <select class="form-control" name="percentage_of" id="percentage_of">
+              <select class="form-control selectable" name="percentage_of" id="percentage_of">
                 <option></option>
                 <option value="nothing">Nothing(Flat Amount)</option>
                 <option value="transactionAmount">Transaction Amount</option>

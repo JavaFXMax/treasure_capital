@@ -166,7 +166,7 @@ BEGINNING OF PAGE
 									<div class="modal-body">
 										<div class="form-group">
 											<label>Book Account</label>
-											<select name="book_account_id" class="form-control">
+											<select name="book_account_id" class="form-control selectable">
 												<option value="">--- Select Book Account ---</option>
 												<option value="">=====================================</option>
 												@foreach($bkAccounts as $bookAc)
@@ -205,7 +205,7 @@ BEGINNING OF PAGE
 										<h6><strong>{{ date('M j, Y', strtotime($acSt->stmt_date)) }}</strong></h6> -->
 										<div class="form-group">
 											<label>Reconcile With&hellip;</label>
-											<select name="book_account_id" class="form-control input-sm" required>
+											<select name="book_account_id" class="form-control input-sm selectable" required>
 												<option value="">--- Select Account to Reconcile ---</option>
 												<option value="">=====================================</option>
 												@foreach($bkAccounts as $bookAc)

@@ -224,7 +224,7 @@ BEGINNING OF PAGE
 											<input type="hidden" name="ac_stmt_id" value="{{ $ac_stmt_id }}">
 											<input type="hidden" name="bk_total" value="{{ $bkTotal }}">
 											<td>
-												<select class="form-control" name="ac_transaction" required>
+												<select class="form-control selectable" name="ac_transaction" required>
 													<option>Match an existing transaction OR add if it doesn't exist.</option>
 													<option>============================</option>
 													@foreach($ac_transaction as $atrans)

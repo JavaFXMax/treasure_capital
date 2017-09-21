@@ -55,7 +55,7 @@ function asMoney($value) {
 
         
             
-      <select class="form-control" name="loanproduct" required>
+      <select class="form-control selectable" name="loanproduct" required>
 
           <option value=""> select loan product </option>
           <option value=""> ------------------ </option>

@@ -43,7 +43,7 @@
 
          <div class="form-group">
             <label for="username">Currency</label>
-            <select class="form-control" name="currency" required>
+            <select class="form-control selectable" name="currency" required>
                 <option value="{{ $loanproduct->currency }}"> {{ $loanproduct->currency}}</option>
 
                 @foreach($currencies as $currency)
@@ -69,7 +69,7 @@
 
          <div class="form-group">
             <label for="username">Interest Formula</label>
-            <select class="form-control" name="formula" required>
+            <select class="form-control selectable" name="formula" required>
                 
                     <option value="{{$loanproduct->formula}}" selected> 
                        @if($loanproduct->formula == 'SL') 
@@ -97,7 +97,7 @@
 
          <div class="form-group">
             <label for="username">Amortization Method</label>
-            <select class="form-control" name="amortization" required>
+            <select class="form-control selectable" name="amortization" required>
                 
                 @if($loanproduct->amortization == 'EI')
 

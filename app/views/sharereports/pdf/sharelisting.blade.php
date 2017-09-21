@@ -57,7 +57,7 @@
                 <td>{{ucwords($member->name)}}</td>
                 <td>{{ucwords($member->membership_no)}}</td>
                 <?php
-                  $contributions=Sharetransaction::where('shareaccount_id','=',$member->id)
+                  $contributions=Savingtransaction::where('savingaccount_id','=',$member->id)
                           ->where('type','=', 'credit')->sum('amount');
                 ?>
                 <td>{{asMoney($contributions)}}</td>

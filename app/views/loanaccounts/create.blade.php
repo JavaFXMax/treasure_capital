@@ -4,6 +4,11 @@
 {{ HTML::script('media/js/jquery.dataTables.min.js') }}
 {{ HTML::script('js/plugins/dataTables/dataTables.bootstrap.js') }}
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('#example').DataTable();
+    });
+</script>
+<script type="text/javascript">
 $(document).ready(function() {
     $('#loanproduct_id').change(function(){
       if($(this).val() != ""){
@@ -86,7 +91,7 @@ $(document).ready(function() {
     $(selectwrapper).on("click",".select_remove_field", function(e){ //user click on remove
         e.preventDefault(); $(this).parent('div').remove(); y--;
     });
-    $('#example').DataTable();
+    
     
     $('.totals').change(function () {
         shareBalanceTotals();
@@ -228,7 +233,7 @@ $(document).ready(function() {
          value="{{$member->id}}">
          <div class="form-group col-lg-6">
             <label for="username">Loan Product</label>
-            <select class="form-control" name="loanproduct_id">
+            <select class="form-control selectable" name="loanproduct_id">
                 <option value="">select product</option>
                 <option>--------------------------</option>
                 @foreach($loanproducts as $loanproduct)
@@ -323,6 +328,11 @@ $(document).ready(function() {
                     <td>{{$member->id_number}}</td>
                     <?php
                         /*Get Savings and shares balances*/
+                    $account = Shareaccount::findOrFail($member->id);
+
+                    $credit = DB::table('sharetransactions')->where('shareaccount_id', '=', $account->id)->where('type', '=', 'credit')->sum('amount');
+                    $debit = DB::table('sharetransactions')->where('shareaccount_id', '=', $account->id)->where('type', '=', 'debit')->sum('amount');
+                        /*
                         $credit=DB::table('savingtransactions')
                                 ->join('savingaccounts','savingtransactions.savingaccount_id','=','savingaccounts.id')
                                 ->where('savingaccounts.member_id',$member->id)
@@ -332,7 +342,7 @@ $(document).ready(function() {
                                 ->join('savingaccounts','savingtransactions.savingaccount_id','=','savingaccounts.id')
                                 ->where('savingaccounts.member_id',$member->id)
                                 ->where('savingtransactions.type','=','debit')
-                                ->sum('savingtransactions.amount');
+                                ->sum('savingtransactions.amount');*/
                         $balance=$credit-$debit;
                         /*Get Loan Balances*/
                         $sum=0;
@@ -403,7 +413,7 @@ $(document).ready(function() {
 <div class="form-group">
              <p style="color:red;"><strong>NB:</strong> Not Mandatory</p>
             <label for="username">Guarantor Matrix</label>
-            <select class="form-control" name="matrix">
+            <select class="form-control selectable" name="matrix">
                 <option value="">select guarantor matrix</option>
                 <option>--------------------------</option>
                 @foreach($matrix as $loanproduct)
@@ -431,7 +441,7 @@ $(document).ready(function() {
                   --> 
                     <div style="margin-top:10px;margin-bottom:10px;">
                         <div class="col-lg-11 form-group" style="margin-left:-15px;">
-                              <select class="form-control" name="securities[]">
+                              <select class="form-control selectable" name="securities[]">
                                     <option value="">Select Loan Collateral</option>
                                     <option>--------------------------</option>
                                     @foreach($matrix as $loanproduct)

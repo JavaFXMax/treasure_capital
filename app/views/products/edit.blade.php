@@ -27,7 +27,7 @@
 
     <div class="form-group">
             <label for="username">Vendor </label>
-            <select class="form-control" name="vendor_id">
+            <select class="form-control selectable" name="vendor_id">
 
 			<option value="{{ $product->vendor->id }}"> {{$product->vendor->name}}</option>
 			<option value=""> ------------------ </option>

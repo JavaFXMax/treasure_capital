@@ -23,7 +23,7 @@ BEGINNING OF PAGE
 			</div>
 			<div class="form-group">
 				<label>Account Credited</label>
-				<select name="ac_credited" class="form-control" required>
+				<select name="ac_credited" class="form-control selectable" required>
 					<option value="">--- Account Credited ---</option>
 					@foreach($accounts as $account)
 						<option value="{{ $account->id }}">({{ $account->category }}) - {{ $account->name }}</option>
@@ -32,7 +32,7 @@ BEGINNING OF PAGE
 			</div>
 			<div class="form-group">
 				<label>Account Debited</label>
-				<select name="ac_debited" class="form-control" required>
+				<select name="ac_debited" class="form-control selectable" required>
 					<option value="">--- Account Debited ---</option>
 					@foreach($accounts as $account)
 						<option value="{{ $account->id }}">({{ $account->category }}) - {{ $account->name }}</option>

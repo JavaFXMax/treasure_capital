@@ -12,7 +12,7 @@
            <form method="post" action="{{URL::to('groupreports')}}">
                <div class="form-group">
                     <label for="username">Member Group</label>
-                    <select class="form-control" name="member_group">
+                    <select class="form-control selectable" name="member_group">
                         <option value="">Select Group</option>
                         <option>--------------------------</option>
                         @foreach($groups as $group)
@@ -22,7 +22,7 @@
                 </div>
                 <div class="form-group">
                     <label for="username">Report Type</label>
-                    <select class="form-control" name="report_type">
+                    <select class="form-control selectable" name="report_type">
                         <option value="">Select Report Type</option>
                         <option>--------------------------</option>
                         <option value="members">Members Listing</option>

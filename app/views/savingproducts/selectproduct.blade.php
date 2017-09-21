@@ -8,7 +8,7 @@ function asMoney($value) {
 ?>
 <div class="row">
 	<div class="col-lg-12">
-  <h3>Update Saving Product</h3>
+  <h3>Update Share Product</h3>
 <hr>
 </div>	
 </div>
@@ -35,7 +35,7 @@ function asMoney($value) {
         </div>
         <div class="form-group">
             <label for="username">Currency</label>
-            <select class="form-control" name="currency" required>
+            <select class="form-control selectable" name="currency" required>
                 @foreach($currencies as $currency)
                 <option value="{{ $currency->shortname }}"> {{ $currency->name }}</option>
                 @endforeach            
@@ -47,7 +47,7 @@ function asMoney($value) {
         </div>
          <div class="form-group">
             <label for="username">Cash Account</label>
-            <select class="form-control" name="cash_account" required>
+            <select class="form-control selectable" name="cash_account" required>
                 <option></option>
                 @foreach($accounts as $account)
                 @if($account->category == 'ASSET')
@@ -59,8 +59,8 @@ function asMoney($value) {
             </select>
         </div> 
         <div class="form-group">
-            <label for="username">Savings Control Account</label>
-            <select class="form-control" name="saving_control_acc" required>
+            <label for="username">Shares Control Account</label>
+            <select class="form-control selectable" name="saving_control_acc" required>
                 <option></option>
                 @foreach($accounts as $account)
                 @if($account->category == 'LIABILITY')
@@ -73,7 +73,7 @@ function asMoney($value) {
         </div>
         <div class="form-group">
             <label for="username">Fee Income Account</label>
-            <select class="form-control" name="fee_income_acc" required>
+            <select class="form-control selectable" name="fee_income_acc" required>
                 <option></option>
                 @foreach($accounts as $account)
                 @if($account->category == 'INCOME')
@@ -86,7 +86,7 @@ function asMoney($value) {
         </div>       
         <div class="form-group">
             <label for="username">Product Type</label>
-            <select class="form-control" name="type" required>
+            <select class="form-control selectable" name="type" required>
                 <option></option>               
                 <option value="BOSA">BOSA</option>
                  <option value="FOSA">FOSA</option>

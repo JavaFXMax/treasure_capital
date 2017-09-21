@@ -37,8 +37,7 @@ class SharetransactionsController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{
+	public function store(){
 		$validator = Validator::make($data = Input::all(), Sharetransaction::$rules);
 
 		if ($validator->fails())
@@ -67,15 +66,13 @@ class SharetransactionsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
-		
-
-
+	public function show($id){
 		$account = Shareaccount::findOrFail($id);
 
-		$credit = DB::table('sharetransactions')->where('shareaccount_id', '=', $account->id)->where('type', '=', 'credit')->sum('amount');
-		$debit = DB::table('sharetransactions')->where('shareaccount_id', '=', $account->id)->where('type', '=', 'debit')->sum('amount');
+		$credit = DB::table('sharetransactions')->where('shareaccount_id', '=', $account->id)->where('type', '=', 'credit')
+            ->sum('amount');
+		$debit = DB::table('sharetransactions')->where('shareaccount_id', '=', $account->id)->where('type', '=', 'debit')
+            ->sum('amount');
 
 		$balance = $credit - $debit;
 
@@ -86,13 +83,10 @@ class SharetransactionsController extends \BaseController {
 		if($sharevalue != 0){
 			$shares = $balance/$sharevalue;
 		} else {
-
 			$shares = 0;
 		}
 		
-
 		return View::make('sharetransactions.show', compact('account', 'shares'));
-
 		
 	}
 
@@ -102,8 +96,7 @@ class SharetransactionsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
-	{
+	public function edit($id){
 		$sharetransaction = Sharetransaction::find($id);
 
 		return View::make('sharetransactions.edit', compact('sharetransaction'));
@@ -115,8 +108,7 @@ class SharetransactionsController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
-	{
+	public function update($id){
 		$sharetransaction = Sharetransaction::findOrFail($id);
 
 		$validator = Validator::make($data = Input::all(), Sharetransaction::$rules);

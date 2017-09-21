@@ -17,7 +17,7 @@
 		</div>
 		<div class="col-md-12" style="margin-bottom: 4%;">
 			<label for="username">Member Name</label>
-			<select class="form-control" name="member">
+			<select class="form-control selectable" name="member">
                 <option value="">select member </option>
                 <option>--------------------------</option>
                 @foreach($loans as $loan)

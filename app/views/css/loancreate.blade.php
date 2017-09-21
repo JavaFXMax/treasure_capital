@@ -61,7 +61,7 @@ $('#loanproduct_id').change(function(){
             y++; //text box increment
             $(selectwrapper).append('<div>'+
 
-            '<div style="margin-left:-15px;" class="form-group col-lg-11"><select class="form-control" name="guarantor_id[]">'+
+            '<div style="margin-left:-15px;" class="form-group col-lg-11"><select class="form-control selectable" name="guarantor_id[]">'+
                 '<option value="">select member</option>'+
                 '<option>--------------------------</option>'+
                 '@foreach($guarantors as $guarantor)'+
@@ -139,7 +139,7 @@ $('#loanproduct_id').change(function(){
          value="{{$member->id}}">
          <div class="form-group col-lg-6">
             <label for="username">Loan Product</label>
-            <select class="form-control" name="loanproduct_id">
+            <select class="form-control selectable" name="loanproduct_id">
                 <option value="">select product</option>
                 <option>--------------------------</option>
                 @foreach($loanproducts as $loanproduct)
@@ -199,7 +199,7 @@ $('#loanproduct_id').change(function(){
           <button class="btn btn-info select_add_field_button">Add More</button>
             <div style="margin-top:10px;margin-bottom:10px;">
                 <div class="form-group col-lg-11" style="margin-left:-15px;">
-                  <select class="form-control" name="guarantor_id[]">
+                  <select class="form-control selectable" name="guarantor_id[]">
                     <option value="">Select Guarantor</option>
                     <option>--------------------------</option>
                     @foreach($guarantors as $guarantor)
@@ -223,7 +223,7 @@ $('#loanproduct_id').change(function(){
 <div class="form-group">
              <p style="color:red;"><strong>NB:</strong> Not Mandatory</p>
             <label for="username">Guarantor Matrix</label>
-            <select class="form-control" name="matrix">
+            <select class="form-control selectable" name="matrix">
                 <option value="">select guarantor matrix</option>
                 <option>--------------------------</option>
                 @foreach($matrix as $loanproduct)
@@ -252,7 +252,7 @@ $('#loanproduct_id').change(function(){
                   --> 
                     <div style="margin-top:10px;margin-bottom:10px;">
                         <div class="col-lg-11 form-group" style="margin-left:-15px;">
-                              <select class="form-control" name="securities[]">
+                              <select class="form-control selectable" name="securities[]">
                                     <option value="">Select Loan Collateral</option>
                                     <option>--------------------------</option>
                                     @foreach($matrix as $loanproduct)

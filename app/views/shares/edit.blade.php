@@ -51,7 +51,7 @@
 
         <div class="form-group">
             <label for="username">Charged on</label>
-            <select class="form-control" name="charged_on" required>
+            <select class="form-control selectable" name="charged_on" required>
                 <option value="{{$share->charged_on }}">{{$share->charged_on }}</option>
 
                 <option>---------------------------</option>

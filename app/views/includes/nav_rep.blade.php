@@ -8,16 +8,24 @@
                         <a href="{{ URL::to('groupreports') }}"><i class="glyphicon glyphicon-file fa-fw"></i> Group Reports</a>
                     </li>
                     <li>
-                        <a href="{{ URL::to('sharereports') }}"><i class="glyphicon glyphicon-file fa-fw"></i> Share Reports</a>
+                        <a href="{{ URL::to('sharereports') }}"><i class="glyphicon glyphicon-file fa-fw"></i>
+                            Share Capital Reports
+                        </a>
                     </li>
                     <li>
-                        <a href="{{ URL::to('savingreports') }}"><i class="glyphicon glyphicon-file fa-fw"></i> Saving Reports</a>
+                        <a href="{{ URL::to('savingreports') }}"><i class="glyphicon glyphicon-file fa-fw"></i>
+                            Share Deposits Reports
+                        </a>
                     </li>                    
                     <li>
-                        <a href="{{ URL::to('loanreports') }}"><i class="glyphicon glyphicon-file"></i> Loan Reports</a>
+                        <a href="{{ URL::to('loanreports') }}"><i class="glyphicon glyphicon-file"></i>
+                            Loan Reports
+                        </a>
                     </li>
                     <li>
-                        <a href="{{ URL::to('financialreports') }}"><i class="glyphicon glyphicon-file fa-fw"></i> Financial Reports</a>
+                        <a href="{{ URL::to('financialreports') }}"><i class="glyphicon glyphicon-file fa-fw"></i>
+                            Financial Reports
+                        </a>
                     </li> 
                 </ul>
                 <!-- /#side-menu -->

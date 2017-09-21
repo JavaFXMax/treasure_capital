@@ -16,7 +16,7 @@
 <div class="row">
 	<div class="col-lg-12">
   <h3>{{$member->name}}</h3>
-  <p>Saving Accounts</p>
+  <p>Share Accounts</p>
 
 <hr>
 </div>	
@@ -30,7 +30,9 @@
       <div class="panel-heading">
          @if(Confide::user()->user_type != 'teller')
 
-                   <a class="btn btn-info btn-sm" href="{{ URL::to('savingaccounts/create/'.$member->id)}}">new Saving Account</a>
+                   <a class="btn btn-info btn-sm" href="{{ URL::to('savingaccounts/create/'.$member->id)}}">
+                       New Share Account
+          </a>
           @endif
 
           
@@ -45,7 +47,7 @@
 
         <th>#</th>
         <th>Member Name</th>
-        <th>Savings Product</th>
+        <th>Shares Product</th>
         <th>Account Number</th>
          
         <th></th>

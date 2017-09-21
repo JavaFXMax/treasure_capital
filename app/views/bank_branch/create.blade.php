@@ -39,7 +39,7 @@
 
         <div class="form-group">
                         <label for="username">Bank <span style="color:red">*</span></label>
-                        <select name="bank" id="bank" class="form-control">
+                        <select name="bank" id="bank" class="form-control selectable">
                             <option></option>
                             @foreach($banks as $bank)
                             <option value="{{ $bank->id }}"> {{ $bank->bank_name }}</option>

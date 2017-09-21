@@ -33,7 +33,7 @@
                   </div> 
                    <div class="form-group">
                       <label for="username">Investment Type<span style="color:red">*</span></label>
-                      <select class="form-control" name="investment" >
+                      <select class="form-control selectable" name="investment" >
                           <option value="">Select Investment Type</option>
                           <option value="">--------------------------</option>
                           @foreach($investment as $loanproduct)

@@ -42,7 +42,7 @@
                   </div>
                    <div class="form-group">
                       <label for="username">Investment Category <span style="color:red">*</span></label>
-                      <select class="form-control" name="category" >
+                      <select class="form-control selectable" name="category" >
                           <option value="">Select Category</option>
                           <option value="">--------------------------</option>
                           @foreach($cats as $loanproduct)
@@ -52,7 +52,7 @@
                   </div>                          
                   <div class="form-group">
                       <label for="username">Vendor Name <span style="color:red">*</span></label>
-                      <select class="form-control" name="vendor" >
+                      <select class="form-control selectable" name="vendor" >
                           <option value="">Select Vendor</option>
                           <option value="">--------------------------</option>
                           @foreach($vendor as $loanproduct)
@@ -67,7 +67,7 @@
                   </div>
                   <div class="form-group">
                       <label for="username">Growth Type <span style="color:red">*</span></label>
-                      <select class="form-control" name="growth_type" >
+                      <select class="form-control selectable" name="growth_type" >
                           <option value="">Select Appreciation/Depreciation</option>
                           <option value="">--------------------------</option>                   
                           <option value="Appreciation">Appreciation</option>

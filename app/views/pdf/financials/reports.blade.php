@@ -12,7 +12,7 @@
    <form method="post" action="{{URL::to('reports/financials')}}">
       <div class="form-group">
             <label for="username">Report</label>
-            <select class="form-control" name="report_type">
+            <select class="form-control selectable" name="report_type">
                 <option value="">select report</option>
                 <option>--------------------------</option>
                 <option value="balancesheet">Balance Sheet</option>

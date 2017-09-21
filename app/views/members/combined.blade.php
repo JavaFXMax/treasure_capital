@@ -1,6 +1,5 @@
 @extends('layouts.ports')
 @section('content')
-<br/>
 <div class="row">
 	<div class="col-lg-12">
         <h3> Combined Statement</h3>
@@ -12,7 +11,7 @@
        <form method="post" action="{{URL::to('reports/combinedstatement')}}">
             <div class="form-group">
                 <label for="username">Member</label>
-                <select class="form-control" name="member">
+                <select class="form-control selectable" name="member">
                     <option value="">select member</option>
                     <option>-----------------------------------------</option>
                     @foreach($members as $member)

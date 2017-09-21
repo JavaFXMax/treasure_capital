@@ -72,7 +72,7 @@
 
 			<div class="form-group">
 				<label>Depreciation Method: </label><br>
-				<select class="form-control input-sm" name="depreciationMethod" style="width: 300px" required>
+				<select class="form-control input-sm selectable" name="depreciationMethod" style="width: 300px" required>
 					<option value="">-- No Depreciation --</option>
 					<option value="SL">Straight-Line Method</option>
 					<option value="SY">Sum of Years Digits</option>

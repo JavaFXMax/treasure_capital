@@ -36,7 +36,7 @@
 
          <div class="form-group">
             <label for="username">Member </label>
-            <select class="form-control" name="member_id">
+            <select class="form-control selectable" name="member_id">
                 <option value="">select member</option>
                 <option>--------------------------</option>
                 @foreach($members as $member)

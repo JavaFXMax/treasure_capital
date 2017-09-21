@@ -10,13 +10,8 @@
 <hr>
 </div>	
 </div>
-
-
 <div class="row">
 	<div class="col-lg-4">
-
-    
-		
 		 @if ($errors->has())
         <div class="alert alert-danger">
             @foreach ($errors->all() as $error)
@@ -24,18 +19,19 @@
             @endforeach
         </div>
         @endif
-
 		 <form method="POST" action="{{{ URL::to('sharetransactions') }}}" accept-charset="UTF-8">
-
-
-
-   
     <fieldset>
+        <div class="form-group">
+            <label for="username">Receipt # </label>
+            <input class="form-control" type="text" name="receipt" id="receipt"
+                   value="{{{ Input::old('receipt') }}}" required>
+        </div>
         <div class="form-group">
             <label for="username">Transaction </label>
            <select name="type" class="form-control" required>
             <option></option>
-            <option value="credit"> Purchase</option>
+            <option value="credit"> Deposit</option>
+            <option value="debit"> Withdraw</option>
            
            </select>
         </div>

@@ -106,30 +106,30 @@ body {
 
 
        
-        <td>Member:</td><td> {{ $transaction->shareaccount->member->name}}</td>
+        <td>Member:</td><td> {{ $transaction->savingaccount->member->name}}</td>
       </tr>
       <tr>
 
-        <td>Member #:</td><td> {{ $transaction->shareaccount->member->membership_no}}</td>
+        <td>Member #:</td><td> {{ $transaction->savingccount->member->membership_no}}</td>
 
         </tr>
       <tr>
         
-        <td>Account :</td><td> {{ $transaction->shareaccount->account_number}}</td>
+        <td>Account :</td><td> {{ $transaction->savingaccount->account_number}}</td>
 
       </tr>
       <tr>
         
         <td>Account Balance:</td>
           <td>
-            {{asMoney(Sharetransaction::where('type','=','credit')->sum('amount')
-              -Sharetransaction::where('type','=','debit')->sum('amount'))}}
+            {{asMoney(Savingtransaction::where('type','=','credit')->sum('amount')
+              -Savingtransaction::where('type','=','debit')->sum('amount'))}}
           </td>
 
       </tr>
       <tr>
         
-        <td>Branch :</td><td> {{ $transaction->shareaccount->member->branch->name}}</td>
+        <td>Branch :</td><td> {{ $transaction->savingaccount->member->branch->name}}</td>
 
       </tr>
 
@@ -164,43 +164,20 @@ body {
        
         
       </tr>
-      
-
-
       <tr>
 
         <hr>
       </tr>
-
-
-
     </table>
-
-
 <br><br>
-
      <table class="table table-bordered">
       <tr>
-
         <td style="width:80px;"> Served By </td>
         <td>  {{Confide::user()->username}} </td>
-        
-
       </tr>
-
-     
-      
-
-
       <tr>
-
         <hr>
-
-
       </tr>
-
-
-
     </table>
 
  <p>Thank you for saving with us</p>

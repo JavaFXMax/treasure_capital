@@ -36,7 +36,7 @@
 
          <div class="form-group">
             <label for="username">Member </label>
-            <select class="form-control" name="member_id">
+            <select class="form-control selectable" name="member_id">
                 <option value="{{$loanguarantor->member->id}}">{{$loanguarantor->member->membership_no}} {{$loanguarantor->member->name}}</option>
                 <option>--------------------------</option>
                 @foreach($members as $member)

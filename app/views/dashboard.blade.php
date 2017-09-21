@@ -60,7 +60,9 @@
         <th></th>
         <th></th>
         <th></th>
+          <!--
         <th></th>
+          -->
         <th></th>
       </thead>
       <tbody>
@@ -75,7 +77,7 @@
           <td>{{ $member->id_number }}</td>
           <td>
              <a href="{{ URL::to('member/savingaccounts/'.$member->id) }}" class="btn btn-info btn-sm">
-                 {{{ Lang::get('messages.savings') }}}
+                 Share Deposits
              </a>
            </td>
             <td>
@@ -88,11 +90,13 @@
                   {{{ Lang::get('messages.loans') }}}
               </a>
             </td>
+            <!--
             <td>
              <a href="{{ URL::to('sharetransactions/show/'.$member->shareaccount->id) }}" class="btn btn-info btn-sm">
                  {{{ Lang::get('messages.shares') }}}
             </a>
             </td>
+            -->
             <td>
              <a href="{{ URL::to('members/show/'.$member->id) }}" class="btn btn-info btn-sm">
                  {{{ Lang::get('messages.manage') }}}
@@ -126,7 +130,7 @@
                 </div>
                 <div class="form-group">
                     <label>Income Account </label>
-                    <select class="form-control" name="account" required>
+                    <select class="form-control selectable" name="account" required>
                         <option value="">--Choose an Account--</option>
                         @foreach($accounts as $account)
                             <option value="{{$account->id}}">

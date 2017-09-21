@@ -8,7 +8,7 @@
 
 <div class="row">
 	<div class="col-lg-12">
-  <h3> Savings Reports</h3>
+  <h3> Share Deposits Reports</h3>
 
 <hr>
 </div>	
@@ -22,7 +22,7 @@
 
       <li>
 
-        <a href="{{ URL::to('reports/savinglisting') }}" target="_blank"> Savings Listing report</a>
+        <a href="{{ URL::to('reports/savinglisting') }}" target="_blank"> Deposists Listing report</a>
 
       </li>
 

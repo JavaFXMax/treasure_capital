@@ -44,7 +44,7 @@
 
         <div class="form-group">
             <label for="username">Debit Account</label>
-            <select class="form-control" name="debit_account">
+            <select class="form-control selectable" name="debit_account">
 
                 <option></option>
                 @foreach($accounts as $account)
@@ -57,7 +57,7 @@
 
         <div class="form-group">
             <label for="username">Credit Account</label>
-            <select class="form-control" name="credit_account">
+            <select class="form-control selectable" name="credit_account">
 
                 <option></option>
                 @foreach($accounts as $account)

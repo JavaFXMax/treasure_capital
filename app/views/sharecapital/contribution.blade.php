@@ -40,10 +40,10 @@
           <td> {{ $i }}</td>
           <td>{{ $member->membership_no }}</td>
           <td>{{ $member->name }}</td>
-          <td>{{asMoney($contributions=Sharetransaction::where('shareaccount_id','=',$member->id)->where('type','=','credit')->sum('amount'))}}</td>
-            <!--
-            <td>{{asMoney($contributions/$sharevalue)}}</td>
-            -->
+          <td>{{asMoney($contributions=Savingtransaction::where('savingaccount_id','=',$member->id)
+              ->where('type','=','credit')->sum('amount'))}}
+          </td>
+            
           <td>
             <div class="btn-group">
                   <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -51,7 +51,7 @@
                   </button>          
                   <ul class="dropdown-menu" role="menu">                   
                     <li>
-                      <a href="{{URL::to('sharetransactions/show/'.$member->id)}}">
+                      <a href="{{URL::to('savingtransactions/show/'.$member->id)}}">
                         Contribute
                       </a>
                     </li>

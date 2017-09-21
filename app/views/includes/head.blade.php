@@ -16,11 +16,14 @@
     {{ HTML::style('css/sb-admin.css') }}
     <!-- datatables css -->
     {{ HTML::style('media/css/jquery.dataTables.min.css') }}
+    {{ HTML::style('media/css/select2.min.css') }}
     {{ HTML::style('datepicker/css/bootstrap-datepicker.css') }}
     <!-- jquery scripts with datatable scripts -->
      {{ HTML::script('media/js/jquery.js') }}
      {{ HTML::script('js/chart.js') }}
     {{ HTML::script('media/js/jquery.dataTables.js') }}
+    {{ HTML::script('media/js/select2.full.js') }}
+    {{ HTML::script('media/js/select2.js') }}
     {{ HTML::script('datepicker/js/bootstrap-datepicker.js') }}    
    <script type="text/javascript">
       $(document).ready(function() {
@@ -34,6 +37,11 @@
         $('#amended').DataTable();
     	} );
   </script>
+<script type="text/javascript">
+     $(document).ready(function() {
+        $('.selectable').select2();
+     });
+</script>
 <style type="text/css">
 
    .right-inner-addon {

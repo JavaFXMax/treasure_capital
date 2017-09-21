@@ -81,7 +81,7 @@
             </li>
              <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-random"></i>Savings<i class="fa fa-caret-down"></i>
+                    <i class="fa fa-random"></i>Share Deposits<i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="nav" id="side-menu">
                     <li>
@@ -93,7 +93,7 @@
                     <li>
                         <a href="{{ URL::to('savingproducts') }}">
                             <i class="fa fa-random"></i>
-                             Saving Products
+                             Share Products
                         </a>
                     </li> 
                 </ul>                 
@@ -103,12 +103,14 @@
                     <i class="fa fa-suitcase"></i>Share Capital<i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="nav" id="side-menu">
+                    <!--
                     <li>
                         <a href="{{ URL::to('shares/show/1') }}">
                             <i class="fa fa-cogs"></i>
                             Settings
                         </a>
                     </li>
+                    -->
                     <li>
                         <a href="{{ URL::to('sharecapital/contribution') }}">
                             <i class="fa fa-random"></i>

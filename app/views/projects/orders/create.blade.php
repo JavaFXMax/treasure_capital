@@ -45,7 +45,7 @@
                   </div> 
                   <div class="form-group">
                       <label for="username">Payment Mode<span style="color:red">*</span></label>
-                      <select class="form-control" name="payment_mode" >
+                      <select class="form-control selectable" name="payment_mode" >
                           <option value="">Select Payment Option</option>
                           <option value="">--------------------------</option>                         
                           <option value="Loan Transfer">Loan Application</option>

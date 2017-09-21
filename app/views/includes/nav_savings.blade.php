@@ -2,7 +2,7 @@
     <div class="sidebar-collapse">
         <ul class="nav" id="side-menu">                    
             <li>
-                <a href="{{ URL::to('savingproducts') }}"><i class="glyphicon glyphicon-tags fa-fw"></i> Saving Products</a>
+                <a href="{{ URL::to('savingproducts') }}"><i class="glyphicon glyphicon-tags fa-fw"></i> Share Products</a>
             </li>
         </ul>
         <!-- /#side-menu -->

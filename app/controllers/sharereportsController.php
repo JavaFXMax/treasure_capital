@@ -32,9 +32,9 @@ class sharereportsController extends \BaseController{
 		//Obtain member ID selected
 		$id=Input::get('memberid');
 		$member=Member::where('id','=',$id)->get()->first();
-		$contributions=Sharetransaction::where('shareaccount_id','=',$id)
+		$contributions=Savingtransaction::where('savingaccount_id','=',$id)
 					  ->where('type','=', 'credit')->sum('amount');
-		$value=Share::count();
+		/*$value=Share::count();
 		if($value>0){
 			$var=share::where('id','=',1)->pluck('value');
 			if($var<=0){
@@ -43,12 +43,13 @@ class sharereportsController extends \BaseController{
 				$sharevalue=$var;
 			}
 		$shares=$contributions/$sharevalue;
-		$transactions=Sharetransaction::where('shareaccount_id','=',$id)->get();
+        */
+		$transactions=Savingtransaction::where('savingaccount_id','=',$id)->get();
 		$organization=Organization::find(1);
-		$pdf = PDF::loadView('sharereports.pdf.individualcontribution', compact('organization','member','contributions','shares','transactions'))->setPaper('a5')->setOrientation('potrait');
+		$pdf = PDF::loadView('sharereports.pdf.individualcontribution', compact('organization','member','contributions','transactions'))->setPaper('a5')->setOrientation('potrait');
 		return $pdf->stream('Individual Member Contribution Report.pdf');
-		}else if($value<=0){
+		/*}else if($value<=0){
 			return Redirect::back();
-		}
+		}*/
 	}
 }

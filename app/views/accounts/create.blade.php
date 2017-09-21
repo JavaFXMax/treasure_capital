@@ -33,7 +33,7 @@
 
          <div class="form-group">
             <label for="username">Account Category</label>
-            <select class="form-control" name="category">
+            <select class="form-control selectable" name="category">
                 <option value="">select category</option>
                 <option>--------------------------</option>
                 <option value="ASSET">Asset (1000)</option>

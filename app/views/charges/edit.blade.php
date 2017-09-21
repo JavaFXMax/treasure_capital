@@ -30,7 +30,7 @@
 
         <div class="form-group">
             <label for="username">Charge Category</label>
-          <select class="form-control" name="category" id="category">
+          <select class="form-control selectable" name="category" id="category">
               <option value="{{ $charge->category }}">{{ $charge->category }}</option>
             <option></option>
             <option value="loan">Loan</option>
@@ -48,7 +48,7 @@
 
          <div class="form-group">
             <label for="username">Calculation Method</label>
-          <select class="form-control" name="calculation_method" id="calculation_method">
+          <select class="form-control selectable" name="calculation_method" id="calculation_method">
             <option value="{{ $charge->calculation_method }}">{{ $charge->calculation_method }}</option>
             <option></option>
             <option value="flat">Flat</option>
@@ -59,7 +59,7 @@
 
          <div class="form-group">
             <label for="username">Payment Method</label>
-          <select class="form-control" name="payment_method" id="payment_method">
+          <select class="form-control selectable" name="payment_method" id="payment_method">
              <option value="{{ $charge->payment_method }}">{{ $charge->payment_method }}</option>
             <option></option>
             <option value="regular">Regular</option>
@@ -70,7 +70,7 @@
         
          <div class="form-group">
             <label for="username">Percentage of</label>
-          <select class="form-control" name="percentage_of" id="percentage_of">
+          <select class="form-control selectable" name="percentage_of" id="percentage_of">
               <option value="{{ $charge->percentage_of }}">{{ $charge->percentage_of }}</option>
             <option></option>
             <option value="transactionAmount">Transaction Amount</option>
